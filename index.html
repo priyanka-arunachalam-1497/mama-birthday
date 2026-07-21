@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Priyanka! 🎂💕</title>
+  <meta name="description" content="A special interactive birthday experience made with love for Priyanka.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════
+       PAGE 1 — VINTAGE ENVELOPE LANDING
+       ═══════════════════════════════════════════════════ -->
+  <section id="page-envelope" class="page active">
+    <div class="particles" id="particles1"></div>
+
+    <div class="envelope-scene">
+      <div class="envelope-wrapper" id="envelope-wrapper">
+        <!-- Envelope layers (back → front) -->
+        <div class="env-inside"></div>
+        <div class="env-left"></div>
+        <div class="env-right"></div>
+        <div class="env-bottom"></div>
+        <!-- Animated top flap -->
+        <div class="env-flap" id="env-flap"></div>
+        <!-- Wax Seal (sibling of flap, stays in place) -->
+        <div class="wax-seal" id="wax-seal">
+          <div class="seal-ring"></div>
+          <div class="seal-inner">
+            <span class="seal-icon">✿</span>
+          </div>
+          <div class="seal-glow"></div>
+        </div>
+      </div>
+
+      <div class="envelope-label">
+        <p class="from-text">with love 💌</p>
+        <p class="click-hint" id="click-hint">Click the seal to open</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       PAGE 2 — BLOOMING FLOWERS & FALLING PETALS
+       ═══════════════════════════════════════════════════ -->
+  <section id="page-flowers" class="page">
+    <canvas id="petals-canvas"></canvas>
+
+    <div class="flowers-stage">
+
+      <!-- Flower 1 — Pink rose -->
+      <div class="flower flower-l" id="flower1">
+        <div class="petal" style="--r:0deg;  --pc:#FF9EBC;--pc2:#E8608A"></div>
+        <div class="petal" style="--r:45deg; --pc:#FFB6CC;--pc2:#F07090"></div>
+        <div class="petal" style="--r:90deg; --pc:#FF9EBC;--pc2:#E8608A"></div>
+        <div class="petal" style="--r:135deg;--pc:#FFB6CC;--pc2:#F07090"></div>
+        <div class="petal" style="--r:180deg;--pc:#FF9EBC;--pc2:#E8608A"></div>
+        <div class="petal" style="--r:225deg;--pc:#FFB6CC;--pc2:#F07090"></div>
+        <div class="petal" style="--r:270deg;--pc:#FF9EBC;--pc2:#E8608A"></div>
+        <div class="petal" style="--r:315deg;--pc:#FFB6CC;--pc2:#F07090"></div>
+        <div class="flower-center fc-gold"></div>
+      </div>
+
+      <!-- Flower 2 — Peach blossom (center, large) -->
+      <div class="flower flower-c" id="flower2">
+        <div class="petal" style="--r:0deg;  --pc:#FFDAB9;--pc2:#FFB347"></div>
+        <div class="petal" style="--r:60deg; --pc:#FFE4C4;--pc2:#FFA07A"></div>
+        <div class="petal" style="--r:120deg;--pc:#FFDAB9;--pc2:#FFB347"></div>
+        <div class="petal" style="--r:180deg;--pc:#FFE4C4;--pc2:#FFA07A"></div>
+        <div class="petal" style="--r:240deg;--pc:#FFDAB9;--pc2:#FFB347"></div>
+        <div class="petal" style="--r:300deg;--pc:#FFE4C4;--pc2:#FFA07A"></div>
+        <div class="flower-center fc-peach"></div>
+      </div>
+
+      <!-- Flower 3 — Deep rose -->
+      <div class="flower flower-r" id="flower3">
+        <div class="petal" style="--r:22.5deg; --pc:#FF6B81;--pc2:#C2185B"></div>
+        <div class="petal" style="--r:67.5deg; --pc:#FF8FA0;--pc2:#E91E63"></div>
+        <div class="petal" style="--r:112.5deg;--pc:#FF6B81;--pc2:#C2185B"></div>
+        <div class="petal" style="--r:157.5deg;--pc:#FF8FA0;--pc2:#E91E63"></div>
+        <div class="petal" style="--r:202.5deg;--pc:#FF6B81;--pc2:#C2185B"></div>
+        <div class="petal" style="--r:247.5deg;--pc:#FF8FA0;--pc2:#E91E63"></div>
+        <div class="petal" style="--r:292.5deg;--pc:#FF6B81;--pc2:#C2185B"></div>
+        <div class="petal" style="--r:337.5deg;--pc:#FF8FA0;--pc2:#E91E63"></div>
+        <div class="flower-center fc-gold"></div>
+      </div>
+    </div>
+
+    <!-- Floating hearts container -->
+    <div class="hearts-layer" id="hearts-layer"></div>
+
+    <div class="flowers-caption">
+      <h2 class="bloom-text">Blooming just for you 🌸</h2>
+    </div>
+
+    <button class="btn-next" id="btn-flowers-next">Continue →</button>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       PAGE 3 — PHOTO GALLERY ROWS
+       ═══════════════════════════════════════════════════ -->
+  <section id="page-gallery" class="page gallery-page">
+    <header class="gallery-header">
+      <h2>Our Beautiful Memories 📸</h2>
+      <p>Each moment, forever treasured</p>
+    </header>
+
+    <div class="gallery-scroll">
+      <!-- Row 1: Slide from left -->
+      <div class="g-row" data-anim="slide-left">
+        <div class="photo-frame pf-tall">
+          <img src="https://picsum.photos/seed/pri1/320/240" alt="Memory 1" loading="lazy">
+          <div class="photo-overlay"><span>Pure Joy ✨</span></div>
+        </div>
+        <div class="photo-frame">
+          <img src="https://picsum.photos/seed/pri2/320/240" alt="Memory 2" loading="lazy">
+          <div class="photo-overlay"><span>Together 💕</span></div>
+        </div>
+        <div class="photo-frame">
+          <img src="https://picsum.photos/seed/pri3/320/240" alt="Memory 3" loading="lazy">
+          <div class="photo-overlay"><span>Smiles 😊</span></div>
+        </div>
+      </div>
+
+      <!-- Row 2: Fade up from below -->
+      <div class="g-row" data-anim="fade-up">
+        <div class="photo-frame">
+          <img src="https://picsum.photos/seed/pri4/320/240" alt="Memory 4" loading="lazy">
+          <div class="photo-overlay"><span>Laughter 😂</span></div>
+        </div>
+        <div class="photo-frame pf-wide">
+          <img src="https://picsum.photos/seed/pri5/480/240" alt="Memory 5" loading="lazy">
+          <div class="photo-overlay"><span>Adventures 🌟</span></div>
+        </div>
+        <div class="photo-frame">
+          <img src="https://picsum.photos/seed/pri6/320/240" alt="Memory 6" loading="lazy">
+          <div class="photo-overlay"><span>Moments 💫</span></div>
+        </div>
+      </div>
+
+      <!-- Row 3: Flip reveal -->
+      <div class="g-row" data-anim="flip">
+        <div class="photo-frame">
+          <img src="https://picsum.photos/seed/pri7/320/240" alt="Memory 7" loading="lazy">
+          <div class="photo-overlay"><span>Dreams 🌙</span></div>
+        </div>
+        <div class="photo-frame">
+          <img src="https://picsum.photos/seed/pri8/320/240" alt="Memory 8" loading="lazy">
+          <div class="photo-overlay"><span>Cherished 💖</span></div>
+        </div>
+        <div class="photo-frame">
+          <img src="https://picsum.photos/seed/pri9/320/240" alt="Memory 9" loading="lazy">
+          <div class="photo-overlay"><span>Forever 🕊️</span></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-next btn-next--gallery" id="btn-gallery-next">Next →</button>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       PAGE 4 — LOCK SCREEN
+       ═══════════════════════════════════════════════════ -->
+  <section id="page-lock" class="page">
+    <div class="lock-layout">
+
+      <!-- Left: Memory Polaroid -->
+      <div class="lock-photo-side">
+        <div class="polaroid" id="memory-polaroid">
+          <img src="https://picsum.photos/seed/memory99/350/420" alt="Our special memory">
+          <div class="polaroid-caption">Our Memory 💕</div>
+        </div>
+        <div class="polaroid-sparkles" id="polaroid-sparkles"></div>
+      </div>
+
+      <!-- Right: Passcode Panel -->
+      <div class="lock-panel glass-card">
+        <div class="lock-header">
+          <div class="lock-icon-anim" id="lock-icon-anim">🔐</div>
+          <h2>Enter Birthday Code</h2>
+          <p class="lock-subtitle">8 digits that changed everything ✨</p>
+        </div>
+
+        <!-- 8 dot indicators -->
+        <div class="code-dots" id="code-dots" role="group" aria-label="Code progress">
+          <div class="code-dot" id="dot-0"></div>
+          <div class="code-dot" id="dot-1"></div>
+          <div class="code-dot" id="dot-2"></div>
+          <div class="code-dot" id="dot-3"></div>
+          <div class="code-dot" id="dot-4"></div>
+          <div class="code-dot" id="dot-5"></div>
+          <div class="code-dot" id="dot-6"></div>
+          <div class="code-dot" id="dot-7"></div>
+        </div>
+
+        <!-- Numpad -->
+        <div class="numpad" id="numpad">
+          <button class="np-btn" data-digit="1" id="np-1">1</button>
+          <button class="np-btn" data-digit="2" id="np-2">2</button>
+          <button class="np-btn" data-digit="3" id="np-3">3</button>
+          <button class="np-btn" data-digit="4" id="np-4">4</button>
+          <button class="np-btn" data-digit="5" id="np-5">5</button>
+          <button class="np-btn" data-digit="6" id="np-6">6</button>
+          <button class="np-btn" data-digit="7" id="np-7">7</button>
+          <button class="np-btn" data-digit="8" id="np-8">8</button>
+          <button class="np-btn" data-digit="9" id="np-9">9</button>
+          <button class="np-btn np-action" id="np-clear">⌫</button>
+          <button class="np-btn" data-digit="0" id="np-0">0</button>
+          <button class="np-btn np-enter" id="np-enter">✓</button>
+        </div>
+
+        <p class="lock-msg" id="lock-msg" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       PAGE 5 — GIFT BOXES
+       ═══════════════════════════════════════════════════ -->
+  <section id="page-gifts" class="page">
+    <header class="gifts-header">
+      <h2>Your Gifts Await 🎁</h2>
+      <p>Hover to feel the magic — click to unveil!</p>
+    </header>
+
+    <div class="gifts-flex">
+
+      <!-- Gift 1 -->
+      <div class="gift-box" id="gift-1" style="--box-hue:15;">
+        <div class="gift-inner" id="gift-inner-1">
+          <div class="gift-lid" id="gift-lid-1">
+            <div class="bow">
+              <div class="bow-loop bow-left"></div>
+              <div class="bow-loop bow-right"></div>
+              <div class="bow-knot"></div>
+            </div>
+          </div>
+          <div class="gift-body">
+            <div class="gift-ribbon-h"></div>
+            <div class="gift-ribbon-v"></div>
+            <div class="gift-num">01</div>
+          </div>
+        </div>
+        <!-- Reveal overlay -->
+        <div class="gift-reveal" id="gift-reveal-1">
+          <button class="gift-close-btn" id="gift-close-1" aria-label="Close gift 1">✕</button>
+          <div class="gift-content">
+            <span class="gift-emoji">💝</span>
+            <h3>Wish #1</h3>
+            <p>A year older, infinitely more wonderful.<br>May this year bring you everything you deserve! 🎂</p>
+          </div>
+        </div>
+        <button class="gift-open-btn" id="gift-open-1">Open 🎀</button>
+      </div>
+
+      <!-- Gift 2 -->
+      <div class="gift-box gift-box--center" id="gift-2" style="--box-hue:340;">
+        <div class="gift-inner" id="gift-inner-2">
+          <div class="gift-lid" id="gift-lid-2">
+            <div class="bow">
+              <div class="bow-loop bow-left"></div>
+              <div class="bow-loop bow-right"></div>
+              <div class="bow-knot"></div>
+            </div>
+          </div>
+          <div class="gift-body">
+            <div class="gift-ribbon-h"></div>
+            <div class="gift-ribbon-v"></div>
+            <div class="gift-num">02</div>
+          </div>
+        </div>
+        <div class="gift-reveal" id="gift-reveal-2">
+          <button class="gift-close-btn" id="gift-close-2" aria-label="Close gift 2">✕</button>
+          <div class="gift-content">
+            <span class="gift-emoji">🌸</span>
+            <h3>Wish #2</h3>
+            <p>May your day bloom with joy, love,<br>and endless laughter every single day! 🌺</p>
+          </div>
+        </div>
+        <button class="gift-open-btn" id="gift-open-2">Open 🎀</button>
+      </div>
+
+      <!-- Gift 3 -->
+      <div class="gift-box" id="gift-3" style="--box-hue:40;">
+        <div class="gift-inner" id="gift-inner-3">
+          <div class="gift-lid" id="gift-lid-3">
+            <div class="bow">
+              <div class="bow-loop bow-left"></div>
+              <div class="bow-loop bow-right"></div>
+              <div class="bow-knot"></div>
+            </div>
+          </div>
+          <div class="gift-body">
+            <div class="gift-ribbon-h"></div>
+            <div class="gift-ribbon-v"></div>
+            <div class="gift-num">03</div>
+          </div>
+        </div>
+        <div class="gift-reveal" id="gift-reveal-3">
+          <button class="gift-close-btn" id="gift-close-3" aria-label="Close gift 3">✕</button>
+          <div class="gift-content">
+            <span class="gift-emoji">⭐</span>
+            <h3>Wish #3</h3>
+            <p>You are the reason every day<br>feels like a celebration! 🎉✨</p>
+          </div>
+        </div>
+        <button class="gift-open-btn" id="gift-open-3">Open 🎀</button>
+      </div>
+
+    </div>
+
+    <button class="btn-next" id="btn-gifts-next" style="opacity:0;pointer-events:none;">Final Surprise →</button>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       PAGE 6 — SLIDESHOW WITH MUSIC
+       ═══════════════════════════════════════════════════ -->
+  <section id="page-slideshow" class="page">
+
+    <!-- Slides -->
+    <div class="slides-container" id="slides-container">
+      <div class="slide" data-index="0" style="background-image:url('https://picsum.photos/seed/slide10/1920/1080')"></div>
+      <div class="slide" data-index="1" style="background-image:url('https://picsum.photos/seed/slide11/1920/1080')"></div>
+      <div class="slide" data-index="2" style="background-image:url('https://picsum.photos/seed/slide12/1920/1080')"></div>
+      <div class="slide" data-index="3" style="background-image:url('https://picsum.photos/seed/slide13/1920/1080')"></div>
+      <div class="slide" data-index="4" style="background-image:url('https://picsum.photos/seed/slide14/1920/1080')"></div>
+    </div>
+
+    <!-- Darkening overlay -->
+    <div class="slide-overlay"></div>
+
+    <!-- Quote -->
+    <div class="ss-quote-wrap">
+      <p class="ss-quote" id="ss-quote">"Every moment with you is a treasure 💕"</p>
+    </div>
+
+    <!-- Birthday End Card (appears after last slide) -->
+    <div class="end-card" id="end-card">
+      <div class="end-inner">
+        <div class="end-cake" aria-label="Birthday cake">🎂</div>
+        <h1 class="end-h1">Happy Birthday</h1>
+        <h2 class="end-h2">Priyanka!</h2>
+        <p class="end-p">May all your dreams bloom forever 💖</p>
+        <div class="end-icons">⭐ ✨ 🌟 ✨ ⭐</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="ss-controls">
+      <button class="ss-btn" id="ss-prev" aria-label="Previous slide">‹</button>
+      <button class="ss-btn ss-btn--play" id="ss-play" aria-label="Play or pause">⏸</button>
+      <button class="ss-btn" id="ss-next" aria-label="Next slide">›</button>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="ss-progress-track" role="progressbar">
+      <div class="ss-progress-bar" id="ss-progress-bar"></div>
+    </div>
+
+    <!-- Slide counter -->
+    <div class="ss-counter" id="ss-counter">1 / 5</div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       ANGRY CHARACTER OVERLAY
+       ═══════════════════════════════════════════════════ -->
+  <div class="angry-backdrop" id="angry-backdrop">
+    <div class="angry-card" id="angry-card">
+
+      <!-- Animated CSS Character -->
+      <div class="char-wrap">
+        <div class="char-face" id="char-face">
+          <!-- Eyebrows -->
+          <div class="char-brow char-brow-l"></div>
+          <div class="char-brow char-brow-r"></div>
+          <!-- Eyes -->
+          <div class="char-eye char-eye-l"></div>
+          <div class="char-eye char-eye-r"></div>
+          <!-- Cheeks -->
+          <div class="char-cheek char-cheek-l"></div>
+          <div class="char-cheek char-cheek-r"></div>
+          <!-- Mouth -->
+          <div class="char-mouth"></div>
+          <!-- Steam puffs -->
+          <div class="steam st1"></div>
+          <div class="steam st2"></div>
+          <div class="steam st3"></div>
+          <!-- Vein / angry mark -->
+          <div class="char-vein"></div>
+        </div>
+
+        <!-- Body -->
+        <div class="char-body">
+          <div class="char-arm char-arm-l"></div>
+          <div class="char-arm char-arm-r"></div>
+          <!-- Legs -->
+          <div class="char-leg char-leg-l"></div>
+          <div class="char-leg char-leg-r"></div>
+        </div>
+      </div>
+
+      <!-- Speech Bubble -->
+      <div class="speech-bubble" id="speech-bubble">
+        <p>Hey! Don't close my gift! 😤</p>
+      </div>
+
+      <!-- Effect sparks -->
+      <div class="anger-sparks" id="anger-sparks"></div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SCRIPTS
+       ═══════════════════════════════════════════════════ -->
+  <!-- GSAP Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- Confetti for birthday end card -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- Main Script -->
+  <script src="scripts/main.js"></script>
+
+</body>
+</html>
