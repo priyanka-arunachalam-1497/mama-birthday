@@ -15,6 +15,9 @@
 </head>
 <body>
 
+  <!-- GLOBAL SAKURA (PEACH BLOSSOM) FALLING OVERLAY -->
+  <div id="sakura-overlay"></div>
+
   <!-- ═══════════════════════════════════════════════════
        PAGE 1 — VINTAGE ENVELOPE LANDING
        ═══════════════════════════════════════════════════ -->
@@ -48,121 +51,408 @@
   </section>
 
   <!-- ═══════════════════════════════════════════════════
-       PAGE 2 — BLOOMING FLOWERS & FALLING PETALS
+       PAGE 2 — BLOOMING PEACH ROSE
        ═══════════════════════════════════════════════════ -->
-  <section id="page-flowers" class="page">
+  <!-- ═══════════════════════════════════════════════════
+       PAGE 2 — BLOOMING PEACH ROSES MEADOW
+       ═══════════════════════════════════════════════════ -->
+  <section id="page-flowers" class="page not-loaded">
     <canvas id="petals-canvas"></canvas>
+    <div class="night-glow"></div>
 
-    <div class="flowers-stage">
+    <div class="flowers">
+      <div class="flower flower--1">
+        <div class="flower__leafs flower__leafs--1">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__white-circle"></div>
 
-      <!-- Flower 1 — Pink rose -->
-      <div class="flower flower-l" id="flower1">
-        <div class="petal" style="--r:0deg;  --pc:#FF9EBC;--pc2:#E8608A"></div>
-        <div class="petal" style="--r:45deg; --pc:#FFB6CC;--pc2:#F07090"></div>
-        <div class="petal" style="--r:90deg; --pc:#FF9EBC;--pc2:#E8608A"></div>
-        <div class="petal" style="--r:135deg;--pc:#FFB6CC;--pc2:#F07090"></div>
-        <div class="petal" style="--r:180deg;--pc:#FF9EBC;--pc2:#E8608A"></div>
-        <div class="petal" style="--r:225deg;--pc:#FFB6CC;--pc2:#F07090"></div>
-        <div class="petal" style="--r:270deg;--pc:#FF9EBC;--pc2:#E8608A"></div>
-        <div class="petal" style="--r:315deg;--pc:#FFB6CC;--pc2:#F07090"></div>
-        <div class="flower-center fc-gold"></div>
+          <div class="flower__light flower__light--1"></div>
+          <div class="flower__light flower__light--2"></div>
+          <div class="flower__light flower__light--3"></div>
+          <div class="flower__light flower__light--4"></div>
+          <div class="flower__light flower__light--5"></div>
+          <div class="flower__light flower__light--6"></div>
+          <div class="flower__light flower__light--7"></div>
+          <div class="flower__light flower__light--8"></div>
+        </div>
+        <div class="flower__line">
+          <div class="flower__line__leaf flower__line__leaf--1"></div>
+          <div class="flower__line__leaf flower__line__leaf--2"></div>
+          <div class="flower__line__leaf flower__line__leaf--3"></div>
+          <div class="flower__line__leaf flower__line__leaf--4"></div>
+          <div class="flower__line__leaf flower__line__leaf--5"></div>
+          <div class="flower__line__leaf flower__line__leaf--6"></div>
+        </div>
       </div>
 
-      <!-- Flower 2 — Peach blossom (center, large) -->
-      <div class="flower flower-c" id="flower2">
-        <div class="petal" style="--r:0deg;  --pc:#FFDAB9;--pc2:#FFB347"></div>
-        <div class="petal" style="--r:60deg; --pc:#FFE4C4;--pc2:#FFA07A"></div>
-        <div class="petal" style="--r:120deg;--pc:#FFDAB9;--pc2:#FFB347"></div>
-        <div class="petal" style="--r:180deg;--pc:#FFE4C4;--pc2:#FFA07A"></div>
-        <div class="petal" style="--r:240deg;--pc:#FFDAB9;--pc2:#FFB347"></div>
-        <div class="petal" style="--r:300deg;--pc:#FFE4C4;--pc2:#FFA07A"></div>
-        <div class="flower-center fc-peach"></div>
+      <div class="flower flower--2">
+        <div class="flower__leafs flower__leafs--2">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__white-circle"></div>
+
+          <div class="flower__light flower__light--1"></div>
+          <div class="flower__light flower__light--2"></div>
+          <div class="flower__light flower__light--3"></div>
+          <div class="flower__light flower__light--4"></div>
+          <div class="flower__light flower__light--5"></div>
+          <div class="flower__light flower__light--6"></div>
+          <div class="flower__light flower__light--7"></div>
+          <div class="flower__light flower__light--8"></div>
+        </div>
+        <div class="flower__line">
+          <div class="flower__line__leaf flower__line__leaf--1"></div>
+          <div class="flower__line__leaf flower__line__leaf--2"></div>
+          <div class="flower__line__leaf flower__line__leaf--3"></div>
+          <div class="flower__line__leaf flower__line__leaf--4"></div>
+        </div>
       </div>
 
-      <!-- Flower 3 — Deep rose -->
-      <div class="flower flower-r" id="flower3">
-        <div class="petal" style="--r:22.5deg; --pc:#FF6B81;--pc2:#C2185B"></div>
-        <div class="petal" style="--r:67.5deg; --pc:#FF8FA0;--pc2:#E91E63"></div>
-        <div class="petal" style="--r:112.5deg;--pc:#FF6B81;--pc2:#C2185B"></div>
-        <div class="petal" style="--r:157.5deg;--pc:#FF8FA0;--pc2:#E91E63"></div>
-        <div class="petal" style="--r:202.5deg;--pc:#FF6B81;--pc2:#C2185B"></div>
-        <div class="petal" style="--r:247.5deg;--pc:#FF8FA0;--pc2:#E91E63"></div>
-        <div class="petal" style="--r:292.5deg;--pc:#FF6B81;--pc2:#C2185B"></div>
-        <div class="petal" style="--r:337.5deg;--pc:#FF8FA0;--pc2:#E91E63"></div>
-        <div class="flower-center fc-gold"></div>
+      <div class="flower flower--3">
+        <div class="flower__leafs flower__leafs--3">
+          <div class="flower__leaf flower__leaf--1"></div>
+          <div class="flower__leaf flower__leaf--2"></div>
+          <div class="flower__leaf flower__leaf--3"></div>
+          <div class="flower__leaf flower__leaf--4"></div>
+          <div class="flower__white-circle"></div>
+
+          <div class="flower__light flower__light--1"></div>
+          <div class="flower__light flower__light--2"></div>
+          <div class="flower__light flower__light--3"></div>
+          <div class="flower__light flower__light--4"></div>
+          <div class="flower__light flower__light--5"></div>
+          <div class="flower__light flower__light--6"></div>
+          <div class="flower__light flower__light--7"></div>
+          <div class="flower__light flower__light--8"></div>
+        </div>
+        <div class="flower__line">
+          <div class="flower__line__leaf flower__line__leaf--1"></div>
+          <div class="flower__line__leaf flower__line__leaf--2"></div>
+          <div class="flower__line__leaf flower__line__leaf--3"></div>
+          <div class="flower__line__leaf flower__line__leaf--4"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d: 1.2s">
+        <div class="flower__g-long">
+          <div class="flower__g-long__top"></div>
+          <div class="flower__g-long__bottom"></div>
+        </div>
+      </div>
+
+      <div class="growing-grass">
+        <div class="flower__grass flower__grass--1">
+          <div class="flower__grass--top"></div>
+          <div class="flower__grass--bottom"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+          <div class="flower__grass__overlay"></div>
+        </div>
+      </div>
+
+      <div class="growing-grass">
+        <div class="flower__grass flower__grass--2">
+          <div class="flower__grass--top"></div>
+          <div class="flower__grass--bottom"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+          <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+          <div class="flower__grass__overlay"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d: 2.4s">
+        <div class="flower__g-right flower__g-right--1">
+          <div class="leaf"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d: 2.8s">
+        <div class="flower__g-right flower__g-right--2">
+          <div class="leaf"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d: 2.8s">
+        <div class="flower__g-front">
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--1">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--2">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--3">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--4">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--5">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--6">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--7">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--8">
+            <div class="flower__g-front__leaf"></div>
+          </div>
+          <div class="flower__g-front__line"></div>
+        </div>
+      </div>
+
+      <div class="grow-ans" style="--d: 3.2s">
+        <div class="flower__g-fr">
+          <div class="leaf"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--1"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--2"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--3"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--4"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--5"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--6"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--7"></div>
+          <div class="flower__g-fr__leaf flower__g-fr__leaf--8"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--0">
+        <div class="grow-ans" style="--d: 3s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d: 2.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.4s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--1">
+        <div class="grow-ans" style="--d: 3.6s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.8s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.2s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--2">
+        <div class="grow-ans" style="--d: 4s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.4s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--3">
+        <div class="grow-ans" style="--d: 4s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--4">
+        <div class="grow-ans" style="--d: 4s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--5">
+        <div class="grow-ans" style="--d: 4s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--6">
+        <div class="grow-ans" style="--d: 4.2s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.4s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.6s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d: 4.8s">
+          <div class="leaf leaf--3"></div>
+        </div>
+      </div>
+
+      <div class="long-g long-g--7">
+        <div class="grow-ans" style="--d: 3s">
+          <div class="leaf leaf--0"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.2s">
+          <div class="leaf leaf--1"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.5s">
+          <div class="leaf leaf--2"></div>
+        </div>
+        <div class="grow-ans" style="--d: 3.6s">
+          <div class="leaf leaf--3"></div>
+        </div>
       </div>
     </div>
 
-    <!-- Floating hearts container -->
+    <!-- 3D Animated Bouquet -->
+    <div class="bouquet-3d-wrap" id="bouquet-3d-wrap">
+      <div class="bouquet-3d-inner">
+        <!-- Silk Wrapping Paper & Ribbon -->
+        <div class="bouquet-wrapper-paper"></div>
+        <div class="bouquet-ribbon">
+          <div class="ribbon-bow"></div>
+          <div class="ribbon-tail ribbon-tail-l"></div>
+          <div class="ribbon-tail ribbon-tail-r"></div>
+        </div>
+
+        <!-- Stems & Leaves -->
+        <div class="bouquet-stems">
+          <div class="b-stem b-stem-1"></div>
+          <div class="b-stem b-stem-2"></div>
+          <div class="b-stem b-stem-3"></div>
+          <div class="b-stem b-stem-4"></div>
+          <div class="b-stem b-stem-5"></div>
+        </div>
+
+        <!-- 3D Rose Blooms -->
+        <div class="bouquet-blooms">
+          <!-- Main Center Peach Rose -->
+          <div class="b-rose b-rose-center">
+            <div class="b-petal b-petal-1"></div>
+            <div class="b-petal b-petal-2"></div>
+            <div class="b-petal b-petal-3"></div>
+            <div class="b-petal b-petal-4"></div>
+            <div class="b-petal b-petal-5"></div>
+            <div class="b-rose-core"></div>
+          </div>
+          <!-- Left Rose -->
+          <div class="b-rose b-rose-left">
+            <div class="b-petal b-petal-1"></div>
+            <div class="b-petal b-petal-2"></div>
+            <div class="b-petal b-petal-3"></div>
+            <div class="b-rose-core"></div>
+          </div>
+          <!-- Right Rose -->
+          <div class="b-rose b-rose-right">
+            <div class="b-petal b-petal-1"></div>
+            <div class="b-petal b-petal-2"></div>
+            <div class="b-petal b-petal-3"></div>
+            <div class="b-rose-core"></div>
+          </div>
+          <!-- Top Rose -->
+          <div class="b-rose b-rose-top">
+            <div class="b-petal b-petal-1"></div>
+            <div class="b-petal b-petal-2"></div>
+            <div class="b-petal b-petal-3"></div>
+            <div class="b-rose-core"></div>
+          </div>
+          <!-- Accent Filler Flowers -->
+          <div class="b-filler b-filler-1">✨</div>
+          <div class="b-filler b-filler-2">🌸</div>
+          <div class="b-filler b-filler-3">✨</div>
+          <div class="b-filler b-filler-4">🌸</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Surprise message (fades in after bloom) -->
+    <div class="bloom-surprise" id="bloom-surprise">
+      <div class="surprise-icon">💐</div>
+      <h2 class="surprise-title italic-gift-text">a small gift for my love</h2>
+      <div class="surprise-heart">💕</div>
+    </div>
+
     <div class="hearts-layer" id="hearts-layer"></div>
-
-    <div class="flowers-caption">
-      <h2 class="bloom-text">Blooming just for you 🌸</h2>
-    </div>
-
-    <button class="btn-next" id="btn-flowers-next">Continue →</button>
+    <button class="btn-next" id="btn-flowers-next" style="opacity:0;pointer-events:none;">Continue →</button>
   </section>
 
   <!-- ═══════════════════════════════════════════════════
-       PAGE 3 — PHOTO GALLERY ROWS
+       PAGE 3 — MEMORY LANE (STORY STYLE)
        ═══════════════════════════════════════════════════ -->
-  <section id="page-gallery" class="page gallery-page">
-    <header class="gallery-header">
-      <h2>Our Beautiful Memories 📸</h2>
-      <p>Each moment, forever treasured</p>
-    </header>
+  <section id="page-gallery" class="page story-page">
 
-    <div class="gallery-scroll">
-      <!-- Row 1: Slide from left -->
-      <div class="g-row" data-anim="slide-left">
-        <div class="photo-frame pf-tall">
-          <img src="https://picsum.photos/seed/pri1/320/240" alt="Memory 1" loading="lazy">
-          <div class="photo-overlay"><span>Pure Joy ✨</span></div>
-        </div>
-        <div class="photo-frame">
-          <img src="https://picsum.photos/seed/pri2/320/240" alt="Memory 2" loading="lazy">
-          <div class="photo-overlay"><span>Together 💕</span></div>
-        </div>
-        <div class="photo-frame">
-          <img src="https://picsum.photos/seed/pri3/320/240" alt="Memory 3" loading="lazy">
-          <div class="photo-overlay"><span>Smiles 😊</span></div>
-        </div>
-      </div>
+    <!-- Top: Story progress segments -->
+    <div class="story-progress" id="story-progress"></div>
 
-      <!-- Row 2: Fade up from below -->
-      <div class="g-row" data-anim="fade-up">
-        <div class="photo-frame">
-          <img src="https://picsum.photos/seed/pri4/320/240" alt="Memory 4" loading="lazy">
-          <div class="photo-overlay"><span>Laughter 😂</span></div>
-        </div>
-        <div class="photo-frame pf-wide">
-          <img src="https://picsum.photos/seed/pri5/480/240" alt="Memory 5" loading="lazy">
-          <div class="photo-overlay"><span>Adventures 🌟</span></div>
-        </div>
-        <div class="photo-frame">
-          <img src="https://picsum.photos/seed/pri6/320/240" alt="Memory 6" loading="lazy">
-          <div class="photo-overlay"><span>Moments 💫</span></div>
-        </div>
-      </div>
-
-      <!-- Row 3: Flip reveal -->
-      <div class="g-row" data-anim="flip">
-        <div class="photo-frame">
-          <img src="https://picsum.photos/seed/pri7/320/240" alt="Memory 7" loading="lazy">
-          <div class="photo-overlay"><span>Dreams 🌙</span></div>
-        </div>
-        <div class="photo-frame">
-          <img src="https://picsum.photos/seed/pri8/320/240" alt="Memory 8" loading="lazy">
-          <div class="photo-overlay"><span>Cherished 💖</span></div>
-        </div>
-        <div class="photo-frame">
-          <img src="https://picsum.photos/seed/pri9/320/240" alt="Memory 9" loading="lazy">
-          <div class="photo-overlay"><span>Forever 🕊️</span></div>
-        </div>
+    <!-- Full-screen photo -->
+    <div class="story-frame" id="story-frame">
+      <img class="story-img" id="story-img"
+           src="https://picsum.photos/seed/pri1/800/1000" alt="Memory">
+      <div class="story-caption-bar">
+        <span class="story-label" id="story-label">Pure Joy ✨</span>
       </div>
     </div>
 
-    <button class="btn-next btn-next--gallery" id="btn-gallery-next">Next →</button>
+    <!-- Tap zones: left = back, right = next -->
+    <div class="story-tap story-tap-left"  id="story-tap-left"></div>
+    <div class="story-tap story-tap-right" id="story-tap-right"></div>
+
+    <!-- Header strip -->
+    <div class="story-header">
+      <span class="story-title">Memory Lane 📸</span>
+      <span class="story-counter" id="story-counter">1 / 9</span>
+    </div>
+
   </section>
 
   <!-- ═══════════════════════════════════════════════════
@@ -174,7 +464,7 @@
       <!-- Left: Memory Polaroid -->
       <div class="lock-photo-side">
         <div class="polaroid" id="memory-polaroid">
-          <img src="https://picsum.photos/seed/memory99/350/420" alt="Our special memory">
+          <img src="passwordpic.png" alt="Our special memory">
           <div class="polaroid-caption">Our Memory 💕</div>
         </div>
         <div class="polaroid-sparkles" id="polaroid-sparkles"></div>
@@ -227,7 +517,7 @@
   <section id="page-gifts" class="page">
     <header class="gifts-header">
       <h2>Your Gifts Await 🎁</h2>
-      <p>Hover to feel the magic — click to unveil!</p>
+      <p>Each box holds something special — dare to open?</p>
     </header>
 
     <div class="gifts-flex">
@@ -257,7 +547,10 @@
             <p>A year older, infinitely more wonderful.<br>May this year bring you everything you deserve! 🎂</p>
           </div>
         </div>
-        <button class="gift-open-btn" id="gift-open-1">Open 🎀</button>
+        <div class="gift-btn-row">
+          <button class="gift-open-btn"    id="gift-open-1">Open 🎀</button>
+          <button class="gift-refuse-btn"  id="gift-refuse-1">No Thanks 😤</button>
+        </div>
       </div>
 
       <!-- Gift 2 -->
@@ -284,7 +577,10 @@
             <p>May your day bloom with joy, love,<br>and endless laughter every single day! 🌺</p>
           </div>
         </div>
-        <button class="gift-open-btn" id="gift-open-2">Open 🎀</button>
+        <div class="gift-btn-row">
+          <button class="gift-open-btn"    id="gift-open-2">Open 🎀</button>
+          <button class="gift-refuse-btn"  id="gift-refuse-2">No Thanks 😤</button>
+        </div>
       </div>
 
       <!-- Gift 3 -->
@@ -311,7 +607,10 @@
             <p>You are the reason every day<br>feels like a celebration! 🎉✨</p>
           </div>
         </div>
-        <button class="gift-open-btn" id="gift-open-3">Open 🎀</button>
+        <div class="gift-btn-row">
+          <button class="gift-open-btn"    id="gift-open-3">Open 🎀</button>
+          <button class="gift-refuse-btn"  id="gift-refuse-3">No Thanks 😤</button>
+        </div>
       </div>
 
     </div>
@@ -320,52 +619,57 @@
   </section>
 
   <!-- ═══════════════════════════════════════════════════
-       PAGE 6 — SLIDESHOW WITH MUSIC
+       PAGE 6 — FINAL SURPRISE
        ═══════════════════════════════════════════════════ -->
-  <section id="page-slideshow" class="page">
+  <section id="page-slideshow" class="page final-page">
 
-    <!-- Slides -->
-    <div class="slides-container" id="slides-container">
-      <div class="slide" data-index="0" style="background-image:url('https://picsum.photos/seed/slide10/1920/1080')"></div>
-      <div class="slide" data-index="1" style="background-image:url('https://picsum.photos/seed/slide11/1920/1080')"></div>
-      <div class="slide" data-index="2" style="background-image:url('https://picsum.photos/seed/slide12/1920/1080')"></div>
-      <div class="slide" data-index="3" style="background-image:url('https://picsum.photos/seed/slide13/1920/1080')"></div>
-      <div class="slide" data-index="4" style="background-image:url('https://picsum.photos/seed/slide14/1920/1080')"></div>
+    <!-- LEFT: Photo -->
+    <div class="final-photo-side">
+      <div class="final-photo-frame">
+        <img src="https://picsum.photos/seed/final99/600/800"
+             alt="My Love" id="final-photo">
+        <div class="final-photo-overlay"></div>
+      </div>
     </div>
 
-    <!-- Darkening overlay -->
-    <div class="slide-overlay"></div>
+    <!-- RIGHT: Voice + I Love You -->
+    <div class="final-content-side">
 
-    <!-- Quote -->
-    <div class="ss-quote-wrap">
-      <p class="ss-quote" id="ss-quote">"Every moment with you is a treasure 💕"</p>
+      <!-- Floating I Love You messages spawned by JS -->
+      <div class="iloveyou-container" id="iloveyou-container"></div>
+
+      <!-- Voice card -->
+      <div class="voice-card glass-card" id="voice-section">
+        <div class="voice-icon-anim">🎵</div>
+        <h3 class="voice-heading">A voice message for you...</h3>
+        <audio id="voice-audio" src="voice.mp3" preload="metadata"></audio>
+        <div class="voice-progress-wrap">
+          <div class="voice-progress-track">
+            <div class="voice-progress-fill" id="voice-progress-fill"></div>
+          </div>
+          <span class="voice-time" id="voice-time">0:00</span>
+        </div>
+        <p class="voice-hint">Press ❤️ to listen</p>
+      </div>
+
+      <!-- Repeating capsule I Love You (visible while audio plays) -->
+      <div class="capsule-iloveyou" id="capsule-msg">I Love You 💕</div>
+
     </div>
 
-    <!-- Birthday End Card (appears after last slide) -->
-    <div class="end-card" id="end-card">
+    <!-- Heart button — bottom right -->
+    <button class="heart-btn" id="heart-btn" aria-label="Play voice message">❤️</button>
+
+    <!-- Final birthday wish (hidden until audio ends) -->
+    <div class="final-wish" id="end-card">
       <div class="end-inner">
-        <div class="end-cake" aria-label="Birthday cake">🎂</div>
+        <div class="end-cake">🎂</div>
         <h1 class="end-h1">Happy Birthday</h1>
         <h2 class="end-h2">Priyanka!</h2>
         <p class="end-p">May all your dreams bloom forever 💖</p>
         <div class="end-icons">⭐ ✨ 🌟 ✨ ⭐</div>
       </div>
     </div>
-
-    <!-- Controls -->
-    <div class="ss-controls">
-      <button class="ss-btn" id="ss-prev" aria-label="Previous slide">‹</button>
-      <button class="ss-btn ss-btn--play" id="ss-play" aria-label="Play or pause">⏸</button>
-      <button class="ss-btn" id="ss-next" aria-label="Next slide">›</button>
-    </div>
-
-    <!-- Progress bar -->
-    <div class="ss-progress-track" role="progressbar">
-      <div class="ss-progress-bar" id="ss-progress-bar"></div>
-    </div>
-
-    <!-- Slide counter -->
-    <div class="ss-counter" id="ss-counter">1 / 5</div>
 
   </section>
 
@@ -409,7 +713,7 @@
 
       <!-- Speech Bubble -->
       <div class="speech-bubble" id="speech-bubble">
-        <p>Hey! Don't close my gift! 😤</p>
+        <p>How DARE you not open my gift?! 😤😡🔥</p>
       </div>
 
       <!-- Effect sparks -->

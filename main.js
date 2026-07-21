@@ -79,9 +79,9 @@ function spawnParticles(containerId) {
   container.innerHTML = '';
 
   const colors = [
-    'rgba(255,218,185,.55)', 'rgba(255,179,71,.50)',
-    'rgba(255,140,105,.40)', 'rgba(255,192,203,.45)',
-    'rgba(255,160,122,.35)'
+    'rgba(255,183,197,.55)', 'rgba(255,160,185,.50)',
+    'rgba(244,130,154,.40)', 'rgba(255,218,230,.45)',
+    'rgba(255,192,210,.35)'
   ];
 
   for (let i = 0; i < 55; i++) {
@@ -151,11 +151,11 @@ function burstTransition(cb) {
 }
 
 // Attach envelope events
-document.getElementById('envelope-wrapper').addEventListener('click', openEnvelope);
+document.getElementById('envelope-wrapper')?.addEventListener('click', openEnvelope);
 
 
 // ════════════════════════════════════════════════════════════
-// PAGE 2 — FLOWERS & PETALS
+// PAGE 2 — BLOOMING PEACH ROSE
 // ════════════════════════════════════════════════════════════
 
 let petalRafId = null;
@@ -163,23 +163,51 @@ let petalParticles = [];
 let heartInterval = null;
 
 function initFlowers() {
-  // Bloom the three flowers with stagger
-  ['flower1', 'flower2', 'flower3'].forEach((id, i) => {
-    setTimeout(() => {
-      const el = document.getElementById(id);
-      if (el) el.classList.add('blooming');
-    }, i * 420);
-  });
+  const page = document.getElementById('page-flowers');
+  if (page) {
+    page.classList.remove('not-loaded');
+    const flowersContainer = page.querySelector('.flowers');
+    if (flowersContainer) {
+      const clone = flowersContainer.cloneNode(true);
+      flowersContainer.parentNode.replaceChild(clone, flowersContainer);
+    }
+  }
 
-  // Start canvas petal shower
+  // 1. GSAP 3D Bouquet Entrance (centered at top: 48%, left: 50%)
+  const bWrap = document.getElementById('bouquet-3d-wrap');
+  if (bWrap) {
+    gsap.fromTo(bWrap,
+      { scale: 0, xPercent: -50, yPercent: -50, rotateY: -60, opacity: 0 },
+      { scale: 1, xPercent: -50, yPercent: -50, rotateY: 0, opacity: 1, duration: 1.6, ease: 'back.out(1.4)' }
+    );
+  }
+
+  // 2. Italic Surprise Text Entrance (centered at top: 10%, left: 50%)
+  gsap.fromTo('#bloom-surprise',
+    { opacity: 0, xPercent: -50, y: 25 },
+    { opacity: 1, xPercent: -50, y: 0, duration: 1.2, delay: 0.8, ease: 'power2.out' }
+  );
+
+  // 3. Continue button entrance (centered at bottom: 35px, left: 50%)
+  const nextBtn = document.getElementById('btn-flowers-next');
+  if (nextBtn) {
+    gsap.fromTo(nextBtn,
+      { opacity: 0, xPercent: -50, y: 20 },
+      { opacity: 1, xPercent: -50, y: 0, duration: 0.8, delay: 1.6, ease: 'power2.out',
+        onComplete: () => { nextBtn.style.pointerEvents = 'all'; }
+      }
+    );
+  }
+
+  // Start canvas petal shower (keeps falling gently)
   startPetalsCanvas();
 
   // Float hearts repeatedly
   if (heartInterval) clearInterval(heartInterval);
   floatHeartsBatch();
-  heartInterval = setInterval(floatHeartsBatch, 3200);
+  heartInterval = setInterval(floatHeartsBatch, 3500);
 
-  playTone(440, 0.05, 'sine');
+  playTone(480, 0.06, 'sine');
 }
 
 function startPetalsCanvas() {
@@ -190,28 +218,27 @@ function startPetalsCanvas() {
   canvas.height = window.innerHeight;
   petalParticles = [];
 
-  const colors = ['#FFB6C1','#FF69B4','#FFDAB9','#FFB347','#FFC0CB','#FF9999','#FFAEB0'];
+  const colors = ['#FFB7C5','#FFDDE6','#F4829A','#FFC8D8','#FADADD','#E8608A','#FFB0C8'];
 
   function newPetal() {
     return {
       x: Math.random() * canvas.width,
       y: -18,
-      vx: (Math.random() - 0.5) * 1.6,
-      vy: Math.random() * 2.2 + 0.9,
+      vx: (Math.random() - 0.5) * 1.2,
+      vy: Math.random() * 1.8 + 0.8,
       rot: Math.random() * 360,
-      rotV: (Math.random() - 0.5) * 4.5,
-      sz: Math.random() * 13 + 5,
+      rotV: (Math.random() - 0.5) * 3.5,
+      sz: Math.random() * 11 + 5,
       color: colors[Math.floor(Math.random() * colors.length)],
-      alpha: Math.random() * 0.5 + 0.35,
-      sway: Math.random() * 1.8,
-      swayS: Math.random() * 0.025,
+      alpha: Math.random() * 0.4 + 0.3,
+      sway: Math.random() * 1.5,
+      swayS: Math.random() * 0.02,
       swayO: Math.random() * Math.PI * 2,
     };
   }
 
-  // Seed initial batch with stagger
-  for (let i = 0; i < 65; i++) {
-    setTimeout(() => { petalParticles.push(newPetal()); }, i * 140);
+  for (let i = 0; i < 40; i++) {
+    setTimeout(() => { petalParticles.push(newPetal()); }, i * 160);
   }
 
   function draw(ts) {
@@ -250,13 +277,13 @@ function floatHeartsBatch() {
   if (!layer) return;
   const emojis = ['💕','❤️','🌸','💖','💗','🌺','💝','✨','🌷'];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 8; i++) {
     setTimeout(() => {
       const h = document.createElement('div');
       h.className = 'heart-float';
       h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       const dur = Math.random() * 3.5 + 4;
-      const sz  = Math.random() * 1.4 + 0.9;
+      const sz  = Math.random() * 1.3 + 0.8;
       h.style.cssText = `
         left:${Math.random() * 96}%;
         bottom:${Math.random() * 10}%;
@@ -266,7 +293,7 @@ function floatHeartsBatch() {
       `;
       layer.appendChild(h);
       h.addEventListener('animationend', () => h.remove());
-    }, i * 220);
+    }, i * 250);
   }
 }
 
@@ -277,47 +304,157 @@ document.getElementById('btn-flowers-next').addEventListener('click', () => {
 
 
 // ════════════════════════════════════════════════════════════
-// PAGE 3 — PHOTO GALLERY
+// PAGE 3 — MEMORY LANE (STORY STYLE)
 // ════════════════════════════════════════════════════════════
 
-function initGallery() {
-  const rows = document.querySelectorAll('.g-row');
-  rows.forEach((row, ri) => {
-    const frames = row.querySelectorAll('.photo-frame');
-    const anim = row.dataset.anim;
+const STORIES = [
+  { img: 'https://picsum.photos/seed/pri1/800/1000', label: 'Pure Joy ✨' },
+  { img: 'https://picsum.photos/seed/pri2/800/1000', label: 'Together 💕' },
+  { img: 'https://picsum.photos/seed/pri3/800/1000', label: 'Smiles 😊' },
+  { img: 'https://picsum.photos/seed/pri4/800/1000', label: 'Laughter 😂' },
+  { img: 'https://picsum.photos/seed/pri5/800/1000', label: 'Adventures 🌟' },
+  { img: 'https://picsum.photos/seed/pri6/800/1000', label: 'Moments 💫' },
+  { img: 'https://picsum.photos/seed/pri7/800/1000', label: 'Dreams 🌙' },
+  { img: 'https://picsum.photos/seed/pri8/800/1000', label: 'Cherished 💖' },
+  { img: 'https://picsum.photos/seed/pri9/800/1000', label: 'Forever 🕊️' }
+];
 
-    setTimeout(() => {
-      frames.forEach((frame, fi) => {
-        setTimeout(() => animatePhotoFrame(frame, anim), fi * 220);
-      });
-    }, ri * 650);
-  });
+let storyIndex = 0;
+let storyTimer = null;
+const STORY_DURATION = 4200; // 4.2 seconds per image
+
+function initGallery() {
+  storyIndex = 0;
+  setupStoryProgressBars();
+  showStorySlide(0);
 }
 
-function animatePhotoFrame(frame, anim) {
-  let from = {};
-  switch (anim) {
-    case 'slide-left':
-      from = { x: -160, opacity: 0, scale: 0.9 };
-      break;
-    case 'fade-up':
-      from = { y: 90, opacity: 0, scale: 0.85 };
-      break;
-    case 'flip':
-      from = { rotationY: 95, opacity: 0, scale: 0.9 };
-      break;
-    default:
-      from = { scale: 0.5, opacity: 0 };
+function setupStoryProgressBars() {
+  const container = document.getElementById('story-progress');
+  if (!container) return;
+  container.innerHTML = '';
+
+  for (let i = 0; i < STORIES.length; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'story-progress-bar';
+    const fill = document.createElement('div');
+    fill.className = 'story-progress-fill';
+    fill.id = `story-fill-${i}`;
+    bar.appendChild(fill);
+    container.appendChild(bar);
   }
-  gsap.fromTo(frame, from, {
-    x: 0, y: 0, opacity: 1, scale: 1, rotationY: 0,
-    duration: 0.72,
-    ease: 'back.out(1.5)',
+}
+
+function showStorySlide(idx) {
+  if (idx < 0) idx = 0;
+  if (idx >= STORIES.length) {
+    // Gallery finished! Move to lock screen
+    clearTimeout(storyTimer);
+    goTo(3);
+    return;
+  }
+
+  storyIndex = idx;
+
+  // Update counter
+  const counter = document.getElementById('story-counter');
+  if (counter) counter.textContent = `${storyIndex + 1} / ${STORIES.length}`;
+
+  // Update label
+  const label = document.getElementById('story-label');
+  if (label) label.textContent = STORIES[storyIndex].label;
+
+  // Setup photo transition
+  const frame = document.getElementById('story-frame');
+  const img = document.getElementById('story-img');
+
+  // Cancel existing animation/timer
+  clearTimeout(storyTimer);
+
+  // Set image source
+  img.src = STORIES[storyIndex].img;
+
+  // Set story fill percentages for progress bar
+  for (let i = 0; i < STORIES.length; i++) {
+    const fill = document.getElementById(`story-fill-${i}`);
+    if (!fill) continue;
+    gsap.killTweensOf(fill);
+    if (i < storyIndex) {
+      fill.style.width = '100%';
+    } else if (i > storyIndex) {
+      fill.style.width = '0%';
+    } else {
+      fill.style.width = '0%';
+      // Animate current active progress bar
+      gsap.to(fill, {
+        width: '100%',
+        duration: STORY_DURATION / 1000,
+        ease: 'none'
+      });
+    }
+  }
+
+  // Choose dynamic transitions depending on index
+  let from = {};
+  switch (storyIndex) {
+    case 0: // Fade In
+      from = { opacity: 0, scale: 1 };
+      break;
+    case 1: // Slide from right
+      from = { x: '100%', opacity: 1, scale: 1 };
+      break;
+    case 2: // Zoom In
+      from = { scale: 0, opacity: 0 };
+      break;
+    case 3: // Flip Y
+      from = { rotationY: 90, opacity: 0, scale: 0.9 };
+      break;
+    case 4: // Blur to sharp
+      from = { filter: 'blur(25px)', opacity: 0.5 };
+      break;
+    case 5: // Slide from bottom
+      from = { y: '100%', opacity: 1 };
+      break;
+    case 6: // Rotate & scale
+      from = { rotate: 90, scale: 0.3, opacity: 0 };
+      break;
+    case 7: // Bounce in
+      from = { scale: 0.1, opacity: 0 };
+      break;
+    case 8: // Soft fade with scale
+      from = { scale: 1.15, opacity: 0 };
+      break;
+  }
+
+  // Execute transition
+  const ease = storyIndex === 7 ? 'back.out(1.6)' : 'power2.out';
+  gsap.fromTo(img, from, {
+    x: 0, y: 0, scale: 1, rotationY: 0, rotate: 0, filter: 'blur(0px)', opacity: 1,
+    duration: 0.8,
+    ease: ease,
     clearProps: 'transform'
   });
+
+  // Play touch tone
+  playTone(520 + (storyIndex * 30), 0.04, 'sine');
+
+  // Trigger next story slide on timeout
+  storyTimer = setTimeout(() => {
+    showStorySlide(storyIndex + 1);
+  }, STORY_DURATION);
 }
 
-document.getElementById('btn-gallery-next').addEventListener('click', () => goTo(3));
+// Left and right tap actions
+document.getElementById('story-tap-left')?.addEventListener('click', () => {
+  if (storyIndex > 0) {
+    showStorySlide(storyIndex - 1);
+  }
+});
+
+document.getElementById('story-tap-right')?.addEventListener('click', () => {
+  showStorySlide(storyIndex + 1);
+});
+
 
 
 // ════════════════════════════════════════════════════════════
@@ -542,7 +679,7 @@ function closeGiftAttempt() {
 // Wire gift buttons
 [1, 2, 3].forEach(n => {
   document.getElementById(`gift-open-${n}`)?.addEventListener('click', () => openGift(n));
-  document.getElementById(`gift-close-${n}`)?.addEventListener('click', () => closeGiftAttempt());
+  document.getElementById(`gift-refuse-${n}`)?.addEventListener('click', () => closeGiftAttempt());
 });
 
 document.getElementById('btn-gifts-next').addEventListener('click', () => goTo(5));
@@ -639,131 +776,176 @@ document.getElementById('angry-backdrop').addEventListener('click', e => {
 
 
 // ════════════════════════════════════════════════════════════
-// PAGE 6 — SLIDESHOW
+// PAGE 6 — FINAL SURPRISE
 // ════════════════════════════════════════════════════════════
 
-const SS_QUOTES = [
-  '"Every moment with you is a treasure 💕"',
-  '"Your smile lights up the whole world 🌟"',
-  '"So grateful for every memory we share 🌸"',
-  '"You make every day feel magical ✨"',
-  '"Wishing you a lifetime of happiness 🎂"'
-];
-
-const SS_DURATION = 5500; // ms per slide
-let ssIndex   = 0;
-let ssPlaying = true;
-let ssStart   = 0;
-let ssRafId   = null;
-let ssTotal   = 0;
+let voiceInterval = null;
+let floatingWordsInterval = null;
+let voiceInitialised = false;
 
 function initSlideshow() {
-  const slides = document.querySelectorAll('.slide');
-  ssTotal = slides.length;
-  ssIndex = 0;
-  ssPlaying = true;
+  if (voiceInitialised) return;
+  voiceInitialised = true;
 
-  goSlide(0);
-  startSsTimer();
-}
+  const audio = document.getElementById('voice-audio');
+  const heartBtn = document.getElementById('heart-btn');
+  const fill = document.getElementById('voice-progress-fill');
+  const time = document.getElementById('voice-time');
+  const capsule = document.getElementById('capsule-msg');
+  const container = document.getElementById('iloveyou-container');
 
-function goSlide(idx, dir) {
-  const slides = document.querySelectorAll('.slide');
-  slides[ssIndex].classList.remove('slide-active');
-  ssIndex = ((idx % ssTotal) + ssTotal) % ssTotal;
+  if (!audio) return;
 
-  const next = slides[ssIndex];
-  next.classList.add('slide-active');
-
-  // Quote transition
-  const quoteEl = document.getElementById('ss-quote');
-  gsap.to(quoteEl, {
-    opacity: 0, y: -18, duration: 0.4,
-    onComplete: () => {
-      quoteEl.textContent = SS_QUOTES[ssIndex] || SS_QUOTES[0];
-      gsap.fromTo(quoteEl, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 });
+  // Click heart button to play/pause
+  heartBtn.addEventListener('click', () => {
+    if (audio.paused && !window.isSynthPlaying) {
+      audio.play().then(() => {
+        heartBtn.classList.add('playing');
+        capsule.classList.add('pulse-active');
+        startFloatingILoveYou();
+      }).catch(err => {
+        console.warn('voice.mp3 not found or blocked, running romantic melody fallback!', err);
+        playFallbackVoiceMelody();
+      });
+    } else if (!audio.paused) {
+      audio.pause();
+      heartBtn.classList.remove('playing');
+      capsule.classList.remove('pulse-active');
+      stopFloatingILoveYou();
     }
   });
 
-  // Counter
-  const counter = document.getElementById('ss-counter');
-  if (counter) counter.textContent = `${ssIndex + 1} / ${ssTotal}`;
+  // Track progress bar & time
+  audio.addEventListener('timeupdate', () => {
+    const pct = (audio.currentTime / audio.duration) * 100 || 0;
+    if (fill) fill.style.width = pct + '%';
+
+    // Format time
+    const cur = formatTime(audio.currentTime);
+    const tot = isNaN(audio.duration) ? '0:00' : formatTime(audio.duration);
+    if (time) time.textContent = `${cur} / ${tot}`;
+  });
+
+  // When audio finishes
+  audio.addEventListener('ended', () => {
+    heartBtn.classList.remove('playing');
+    capsule.classList.remove('pulse-active');
+    stopFloatingILoveYou();
+    showFinalWish();
+  });
 }
 
-function startSsTimer() {
-  if (ssRafId) cancelAnimationFrame(ssRafId);
-  ssStart = performance.now();
+function playFallbackVoiceMelody() {
+  if (window.isSynthPlaying) return;
+  window.isSynthPlaying = true;
 
-  function tick(now) {
-    if (!ssPlaying) return;
-    const elapsed = now - ssStart;
-    const pct = Math.min((elapsed / SS_DURATION) * 100, 100);
-    const pb = document.getElementById('ss-progress-bar');
-    if (pb) pb.style.width = pct + '%';
+  const heartBtn = document.getElementById('heart-btn');
+  const fill = document.getElementById('voice-progress-fill');
+  const time = document.getElementById('voice-time');
+  const capsule = document.getElementById('capsule-msg');
 
-    if (elapsed >= SS_DURATION) {
-      ssStart = now;
-      pb.style.width = '0%';
+  heartBtn.classList.add('playing');
+  capsule.classList.add('pulse-active');
+  startFloatingILoveYou();
 
-      if (ssIndex === ssTotal - 1) {
-        showEndCard();
-        return;
-      }
-      goSlide(ssIndex + 1);
+  const totalDuration = 8.0; // 8 seconds fallback
+  const startTime = performance.now();
+
+  // Romantic chord notes (freqs)
+  const notes = [523.25, 659.25, 783.99, 880.00, 1046.50, 880.00, 783.99, 659.25];
+  notes.forEach((freq, idx) => {
+    setTimeout(() => {
+      if (window.isSynthPlaying) playTone(freq, 0.08, 'sine');
+    }, idx * 950);
+  });
+
+  const timer = setInterval(() => {
+    const elapsed = (performance.now() - startTime) / 1000;
+    const pct = Math.min((elapsed / totalDuration) * 100, 100);
+    if (fill) fill.style.width = pct + '%';
+    if (time) time.textContent = `${formatTime(elapsed)} / 0:08`;
+
+    if (elapsed >= totalDuration) {
+      clearInterval(timer);
+      window.isSynthPlaying = false;
+      heartBtn.classList.remove('playing');
+      capsule.classList.remove('pulse-active');
+      stopFloatingILoveYou();
+      showFinalWish();
     }
-    ssRafId = requestAnimationFrame(tick);
+  }, 100);
+}
+
+function startFloatingILoveYou() {
+  if (floatingWordsInterval) clearInterval(floatingWordsInterval);
+  spawnFloatingWord();
+  floatingWordsInterval = setInterval(spawnFloatingWord, 700);
+}
+
+function stopFloatingILoveYou() {
+  if (floatingWordsInterval) {
+    clearInterval(floatingWordsInterval);
+    floatingWordsInterval = null;
   }
-  ssRafId = requestAnimationFrame(tick);
 }
 
-function showEndCard() {
-  ssPlaying = false;
-  if (ssRafId) cancelAnimationFrame(ssRafId);
+function spawnFloatingWord() {
+  const container = document.getElementById('iloveyou-container');
+  if (!container) return;
 
-  const ec = document.getElementById('end-card');
-  ec.classList.add('show');
+  const words = ['I Love You 💕', 'Love You ✨', 'Always 💖', 'Forever 💕', 'My Princess 👑', 'Sweetheart 🌸', 'Priyanka 💞'];
+  const el = document.createElement('div');
+  el.className = 'iloveyou-float';
+  el.textContent = words[Math.floor(Math.random() * words.length)];
 
-  // Triple confetti blasts
-  setTimeout(() => confettiBlast(), 300);
-  setTimeout(() => confettiBlast(), 1500);
-  setTimeout(() => confettiBlast(), 3000);
+  // Random size, sway, delay and duration
+  const x = Math.random() * 80 + 10; // 10% - 90%
+  const size = Math.random() * 0.9 + 1.1; // 1.1rem - 2.0rem
+  const duration = Math.random() * 2.5 + 2.5; // 2.5s - 5.0s
+
+  el.style.left = x + '%';
+  el.style.fontSize = size + 'rem';
+  el.style.animationDuration = duration + 's';
+  el.style.bottom = '0%';
+
+  container.appendChild(el);
+
+  // Auto remove
+  el.addEventListener('animationend', () => el.remove());
 }
 
-function confettiBlast() {
-  const peachColors = ['#FFDAB9','#FFB347','#FF8C69','#FFD700','#FF69B4','#FFA07A'];
+function showFinalWish() {
+  const wish = document.getElementById('end-card');
+  if (!wish) return;
+
+  wish.classList.add('show');
+  gsap.fromTo(wish,
+    { opacity: 0, scale: 0.96 },
+    { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out' }
+  );
+
+  // Celebration Confetti blasts!
+  triggerCelebrationConfetti();
+}
+
+function triggerCelebrationConfetti() {
+  const colors = ['#FFC0D4', '#F4829A', '#E05C7A', '#FFD700', '#FFB7C5'];
   confetti({
-    particleCount: 120, spread: 75,
+    particleCount: 140, spread: 80,
     origin: { y: 0.58 },
-    colors: peachColors
+    colors: colors
   });
+  
+  // Staggered sides explosion
   setTimeout(() => {
-    confetti({ particleCount: 70, angle: 55,  spread: 60, origin: { x: 0 }, colors: peachColors });
-    confetti({ particleCount: 70, angle: 125, spread: 60, origin: { x: 1 }, colors: peachColors });
-  }, 250);
+    confetti({ particleCount: 80, angle: 60,  spread: 55, origin: { x: 0 }, colors: colors });
+    confetti({ particleCount: 80, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+  }, 350);
+
+  setTimeout(() => {
+    confetti({ particleCount: 50, angle: 90, spread: 100, origin: { y: 0.7 }, colors: colors });
+  }, 750);
 }
-
-// Controls
-document.getElementById('ss-prev').addEventListener('click', () => {
-  goSlide(ssIndex - 1);
-  ssStart = performance.now();
-  document.getElementById('ss-progress-bar').style.width = '0%';
-  if (ssPlaying) startSsTimer();
-});
-
-document.getElementById('ss-next').addEventListener('click', () => {
-  if (ssIndex === ssTotal - 1) { showEndCard(); return; }
-  goSlide(ssIndex + 1);
-  ssStart = performance.now();
-  document.getElementById('ss-progress-bar').style.width = '0%';
-  if (ssPlaying) startSsTimer();
-});
-
-document.getElementById('ss-play').addEventListener('click', () => {
-  ssPlaying = !ssPlaying;
-  document.getElementById('ss-play').textContent = ssPlaying ? '⏸' : '▶';
-  if (ssPlaying) { ssStart = performance.now(); startSsTimer(); }
-  else if (ssRafId) cancelAnimationFrame(ssRafId);
-});
 
 
 // ════════════════════════════════════════════════════════════
@@ -802,10 +984,62 @@ function playTone(freq = 440, vol = 0.06, type = 'sine') {
 
 
 // ════════════════════════════════════════════════════════════
+// GLOBAL SAKURA (PEACH BLOSSOM) FALLING ANIMATION
+// ════════════════════════════════════════════════════════════
+
+const SAKURA_COUNT = 18; // Gentle, not too many
+
+function createSakuraPetal() {
+  const overlay = document.getElementById('sakura-overlay');
+  if (!overlay) return null;
+
+  const el = document.createElement('div');
+  el.className = 'sakura-petal';
+
+  // Simple oval petal sizes — like the reference image
+  const w = Math.random() * 10 + 8;   // 8–18px wide
+  const h = w * (Math.random() * 0.5 + 1.5); // 1.5–2x taller (elongated oval)
+  el.style.width  = w + 'px';
+  el.style.height = h + 'px';
+
+  // Random start position across full width
+  const startX = Math.random() * 100;
+
+  // Gentle sway — small horizontal drift like reference image
+  const swayDir = Math.random() > 0.5 ? 1 : -1;
+  const swayAmt = (Math.random() * 60 + 20) * swayDir;  // 20–80px drift
+  const spinDeg = (Math.random() * 120 + 60) * swayDir; // 60–180deg rotation
+  const startRot = Math.random() * 360;                  // random start angle
+  const duration = Math.random() * 8 + 8;               // 8–16s — slow & peaceful
+  const delay    = Math.random() * 16;                   // spread across time
+
+  el.style.left = startX + 'vw';
+  el.style.setProperty('--sway', swayAmt + 'px');
+  el.style.setProperty('--spin', spinDeg + 'deg');
+  el.style.setProperty('--start-rot', startRot + 'deg');
+  el.style.animationDuration = duration + 's';
+  el.style.animationDelay = '-' + delay + 's'; // already in flight
+  el.style.opacity = (Math.random() * 0.25 + 0.45).toString(); // 0.45–0.70
+
+  overlay.appendChild(el);
+  return el;
+}
+
+function initSakuraOverlay() {
+  for (let i = 0; i < SAKURA_COUNT; i++) {
+    createSakuraPetal();
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════
 // BOOTSTRAP
 // ════════════════════════════════════════════════════════════
 
 window.addEventListener('load', () => {
+  // Start global sakura falling animation immediately
+  initSakuraOverlay();
+
   // Ensure first page is visible, then fade in
   const firstPage = document.getElementById(PAGE_IDS[0]);
   firstPage.classList.add('active');
