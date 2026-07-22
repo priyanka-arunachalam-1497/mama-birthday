@@ -1433,6 +1433,14 @@ button {
 .flower--3 .flower__line__leaf--3 { animation: blooming-leaf-left var(--fl-speed) 2.1s both; }
 .flower--3 .flower__line__leaf--4 { animation: blooming-leaf-left var(--fl-speed) 1.9s both; }
 
+.flower,
+.flower__leaf,
+.flower__leafs,
+.flower__line {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 .flower__leafs {
   position: relative;
   animation: blooming-flower 2s both;
@@ -1447,10 +1455,10 @@ button {
   left: 0;
   top: 0;
   transform: translate(-50%, -100%);
-  width: 8vmin;
-  height: 8vmin;
-  background-color: #FFB7C5;
-  filter: blur(10vmin);
+  width: 14vmin;
+  height: 14vmin;
+  background: radial-gradient(circle, rgba(255, 183, 197, 0.45) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .flower__leaf {
@@ -2070,43 +2078,45 @@ button {
   to { transform: scale(1.08); }
 }
 
-/* Floating I Love You messages — Full screen bounds */
+/* Floating I Love You messages — Bursts from bottom-right Heart Button */
 .iloveyou-container {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 50;
+  z-index: 80;
   overflow: hidden;
 }
 
 .iloveyou-float {
-  position: absolute;
-  bottom: -40px;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
   color: #E05C7A;
   font-family: var(--f-script);
   font-weight: bold;
   pointer-events: none;
   white-space: nowrap;
-  transform: translateX(-50%);
-  animation: floatUpWord linear forwards;
-  text-shadow: 0 2px 8px rgba(255,255,255,0.9), 0 0 14px rgba(255,182,193,0.7);
-  z-index: 50;
+  animation: floatFromHeart linear forwards;
+  text-shadow: 0 2px 8px rgba(255,255,255,0.95), 0 0 14px rgba(255,182,193,0.8);
+  z-index: 150;
+  will-change: transform, opacity;
 }
 
-@keyframes floatUpWord {
+@keyframes floatFromHeart {
   0% {
     opacity: 0;
-    transform: translateX(-50%) translateY(0) scale(0.7) rotate(-5deg);
+    transform: translate(0, 0) scale(0.3) rotate(0deg);
   }
   15% {
     opacity: 1;
+    transform: translate(calc(var(--drift-x) * 0.15), calc(var(--drift-y) * 0.15)) scale(1) rotate(var(--rot));
   }
   80% {
     opacity: 0.9;
   }
   100% {
     opacity: 0;
-    transform: translateX(-50%) translateY(-85vh) scale(1.1) rotate(5deg);
+    transform: translate(var(--drift-x), var(--drift-y)) scale(1.15) rotate(var(--rot));
   }
 }
 

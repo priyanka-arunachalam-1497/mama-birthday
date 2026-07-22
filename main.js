@@ -1038,12 +1038,16 @@ function spawnFloatingWord() {
   el.className = 'iloveyou-float';
   el.textContent = words[Math.floor(Math.random() * words.length)];
 
-  // Keep horizontal bounds within 15% to 85% of screen width with centered transform
-  const x = Math.random() * 70 + 15;
-  const size = Math.random() * 0.5 + 1.25;
-  const duration = Math.random() * 2.0 + 3.0;
+  // Trajectory bursting from heart button (bottom right) outwards into center/top-left screen
+  const driftX = (Math.random() * -360 - 60) + 'px';
+  const driftY = (Math.random() * -480 - 200) + 'px';
+  const rot = (Math.random() * 26 - 13) + 'deg';
+  const size = Math.random() * 0.45 + 1.2;
+  const duration = Math.random() * 1.6 + 3.2;
 
-  el.style.left = x + '%';
+  el.style.setProperty('--drift-x', driftX);
+  el.style.setProperty('--drift-y', driftY);
+  el.style.setProperty('--rot', rot);
   el.style.fontSize = size + 'rem';
   el.style.animationDuration = duration + 's';
 
