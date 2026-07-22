@@ -105,6 +105,7 @@ let envelopeOpened = false;
 function openEnvelope() {
   if (envelopeOpened) return;
   envelopeOpened = true;
+  startBgMusic();
 
   const seal = document.getElementById('wax-seal');
   const flap = document.getElementById('env-flap');
@@ -633,23 +634,21 @@ function initGifts() {
 }
 
 // Map of gift number → fullscreen photo src (empty = no fullscreen)
-const GIFT_PHOTOS = { 2: 'gift2.png' };
+const GIFT_PHOTOS = { 1: 'gift1.png', 2: 'gift2.png', 3: 'gift3.jpeg' };
 
 function openGift(n) {
-  if (openedGifts.has(n)) return;
   openedGifts.add(n);
 
   const lid     = document.getElementById(`gift-lid-${n}`);
   const reveal  = document.getElementById(`gift-reveal-${n}`);
   const openBtn = document.getElementById(`gift-open-${n}`);
 
-  lid.classList.add('lid-open');
-  playTone(500, 0.05); setTimeout(() => playTone(700, 0.06), 160);
+  if (lid) lid.classList.add('lid-open');
 
   gsap.to(`#gift-${n}`, {
     y: -16, duration: 0.3, yoyo: true, repeat: 1, ease: 'power2.inOut',
     onComplete: () => {
-      openBtn.classList.add('hidden');
+      if (openBtn) openBtn.classList.add('hidden');
 
       // Spawn confetti burst from this gift
       const rect = document.getElementById(`gift-${n}`).getBoundingClientRect();
@@ -661,19 +660,26 @@ function openGift(n) {
 
       // Show fullscreen photo if this gift has one, otherwise show in-box reveal
       if (GIFT_PHOTOS[n]) {
-        setTimeout(() => showGiftPhoto(GIFT_PHOTOS[n]), 300);
+        setTimeout(() => showGiftPhoto(GIFT_PHOTOS[n]), 200);
       } else {
-        reveal.classList.add('revealed');
+        if (reveal) reveal.classList.add('revealed');
       }
 
       // Check if all opened
-      if (openedGifts.size === 3) {
+      if (openedGifts.size >= 3) {
         const nextBtn = document.getElementById('btn-gifts-next');
         gsap.to(nextBtn, { opacity: 1, duration: 0.6, delay: 0.3 });
-        nextBtn.style.pointerEvents = 'all';
+        if (nextBtn) nextBtn.style.pointerEvents = 'all';
       }
     }
   });
+}
+
+function closeGiftCard(n) {
+  const reveal  = document.getElementById(`gift-reveal-${n}`);
+  const openBtn = document.getElementById(`gift-open-${n}`);
+  if (reveal) reveal.classList.remove('revealed');
+  if (openBtn) openBtn.classList.remove('hidden');
 }
 
 function showGiftPhoto(src) {
@@ -709,10 +715,25 @@ function closeGiftAttempt() {
   showAngryCharacter();
 }
 
-// Wire gift buttons
+// Wire gift buttons and box clicks (allows re-opening anytime)
 [1, 2, 3].forEach(n => {
-  document.getElementById(`gift-open-${n}`)?.addEventListener('click', () => openGift(n));
-  document.getElementById(`gift-refuse-${n}`)?.addEventListener('click', () => closeGiftAttempt());
+  const box = document.getElementById(`gift-${n}`);
+  box?.addEventListener('click', (e) => {
+    if (e.target.closest('.gift-refuse-btn') || e.target.closest('.gift-close-btn')) return;
+    openGift(n);
+  });
+  document.getElementById(`gift-open-${n}`)?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openGift(n);
+  });
+  document.getElementById(`gift-close-${n}`)?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeGiftCard(n);
+  });
+  document.getElementById(`gift-refuse-${n}`)?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeGiftAttempt();
+  });
 });
 
 document.getElementById('btn-gifts-next').addEventListener('click', () => goTo(5));
@@ -860,6 +881,29 @@ function startFinalSlideshow() {
   }, 2500); // change every 2.5 seconds
 }
 
+let isVoicePlaying = false;
+
+function startBgMusic() {
+  if (isVoicePlaying) return;
+  const bgMusic = document.getElementById('bg-music');
+  if (bgMusic && bgMusic.paused) {
+    bgMusic.play().catch(() => {});
+  }
+}
+
+function pauseBgMusic() {
+  const bgMusic = document.getElementById('bg-music');
+  if (bgMusic && !bgMusic.paused) {
+    bgMusic.pause();
+  }
+}
+
+window.addEventListener('click', () => {
+  if (!isVoicePlaying) {
+    startBgMusic();
+  }
+});
+
 function initSlideshow() {
   if (voiceInitialised) return;
   voiceInitialised = true;
@@ -880,18 +924,22 @@ function initSlideshow() {
   heartBtn.addEventListener('click', () => {
     if (audio.paused && !window.isSynthPlaying) {
       audio.play().then(() => {
+        isVoicePlaying = true;
+        pauseBgMusic();
         heartBtn.classList.add('playing');
         capsule.classList.add('pulse-active');
         startFloatingILoveYou();
       }).catch(err => {
-        console.warn('voice.mp3 not found or blocked, running romantic melody fallback!', err);
+        console.warn('voice audio block/fallback, running melody!', err);
         playFallbackVoiceMelody();
       });
     } else if (!audio.paused) {
       audio.pause();
+      isVoicePlaying = false;
       heartBtn.classList.remove('playing');
       capsule.classList.remove('pulse-active');
       stopFloatingILoveYou();
+      startBgMusic();
     }
   });
 
@@ -908,9 +956,11 @@ function initSlideshow() {
 
   // When audio finishes
   audio.addEventListener('ended', () => {
+    isVoicePlaying = false;
     heartBtn.classList.remove('playing');
     capsule.classList.remove('pulse-active');
     stopFloatingILoveYou();
+    startBgMusic();
     showFinalWish();
   });
 }
@@ -918,6 +968,8 @@ function initSlideshow() {
 function playFallbackVoiceMelody() {
   if (window.isSynthPlaying) return;
   window.isSynthPlaying = true;
+  isVoicePlaying = true;
+  pauseBgMusic();
 
   const heartBtn = document.getElementById('heart-btn');
   const fill = document.getElementById('voice-progress-fill');
@@ -948,9 +1000,11 @@ function playFallbackVoiceMelody() {
     if (elapsed >= totalDuration) {
       clearInterval(timer);
       window.isSynthPlaying = false;
+      isVoicePlaying = false;
       heartBtn.classList.remove('playing');
       capsule.classList.remove('pulse-active');
       stopFloatingILoveYou();
+      startBgMusic();
       showFinalWish();
     }
   }, 100);
@@ -1044,22 +1098,8 @@ function getAudio() {
 }
 
 function playTone(freq = 440, vol = 0.06, type = 'sine') {
-  try {
-    const ctx  = getAudio();
-    const osc  = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(vol, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
-
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.35);
-  } catch (_) { /* silently ignore audio errors */ }
+  // Haptic button sounds disabled as requested
+  return;
 }
 
 

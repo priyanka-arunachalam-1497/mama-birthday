@@ -473,10 +473,8 @@
         <!-- Reveal overlay -->
         <div class="gift-reveal" id="gift-reveal-1">
           <button class="gift-close-btn" id="gift-close-1" aria-label="Close gift 1">✕</button>
-          <div class="gift-content">
-            <span class="gift-emoji">💝</span>
-            <h3>Wish #1</h3>
-            <p>A year older, infinitely more wonderful.<br>May this year bring you everything you deserve! 🎂</p>
+          <div class="gift-content gift-content--img">
+            <img src="gift1.png" alt="A gift for you 💕" class="gift-reveal-img">
           </div>
         </div>
         <div class="gift-btn-row">
@@ -531,10 +529,8 @@
         </div>
         <div class="gift-reveal" id="gift-reveal-3">
           <button class="gift-close-btn" id="gift-close-3" aria-label="Close gift 3">✕</button>
-          <div class="gift-content">
-            <span class="gift-emoji">⭐</span>
-            <h3>Wish #3</h3>
-            <p>You are the reason every day<br>feels like a celebration! 🎉✨</p>
+          <div class="gift-content gift-content--img">
+            <img src="gift3.jpeg" alt="A gift for you 💕" class="gift-reveal-img">
           </div>
         </div>
         <div class="gift-btn-row">
@@ -573,7 +569,8 @@
       <!-- Voice card -->
       <div class="voice-card glass-card" id="voice-section">
         <div class="voice-icon-anim">🎵</div>
-        <h3 class="voice-heading">A voice message for you...</h3>
+        <!-- Background Music -->
+        <audio id="bg-music" src="Eppadi Vandhaayo - Vignesh Ramakrishna, Siddhu Kumar, Chinmayi, Anand Aravindaks - www.dhunming.com.m4a" loop preload="auto"></audio>
         <audio id="voice-audio" src="Voice message.wav" preload="metadata"></audio>
         <div class="voice-progress-wrap">
           <div class="voice-progress-track">
