@@ -366,7 +366,6 @@ function setupStoryProgressBars() {
 function showStorySlide(idx) {
   if (idx < 0) idx = 0;
   if (idx >= STORIES.length) {
-    // Gallery finished! Move to lock screen
     clearTimeout(storyTimer);
     goTo(3);
     return;
@@ -374,17 +373,12 @@ function showStorySlide(idx) {
 
   storyIndex = idx;
 
-  // Setup photo transition
   const img = document.getElementById('story-img');
   const blurBg = document.getElementById('story-blur-bg');
 
-  // Cancel existing animation/timer
   clearTimeout(storyTimer);
 
-  // Set image source and blur background simultaneously
   const imgSrc = STORIES[storyIndex].img;
-  img.src = imgSrc;
-  if (blurBg) blurBg.style.backgroundImage = `url('${imgSrc}')`;
 
   // Set story fill percentages for progress bar
   for (let i = 0; i < STORIES.length; i++) {
@@ -397,7 +391,6 @@ function showStorySlide(idx) {
       fill.style.width = '0%';
     } else {
       fill.style.width = '0%';
-      // Animate current active progress bar
       gsap.to(fill, {
         width: '100%',
         duration: STORY_DURATION / 1000,
@@ -406,35 +399,48 @@ function showStorySlide(idx) {
     }
   }
 
-  // Choose dynamic transitions depending on index
-  let from = {};
-  const mod = storyIndex % 9;
-  switch (mod) {
-    case 0: from = { opacity: 0, scale: 1.05 };                      break;
-    case 1: from = { xPercent: 100, opacity: 0.8, scale: 1 };        break;
-    case 2: from = { scale: 0.3, opacity: 0 };                       break;
-    case 3: from = { rotationY: 90, opacity: 0, scale: 0.9 };        break;
-    case 4: from = { filter: 'blur(22px)', opacity: 0.4, scale: 1 }; break;
-    case 5: from = { yPercent: 60, opacity: 0, scale: 1 };           break;
-    case 6: from = { rotate: 15, scale: 0.5, opacity: 0 };           break;
-    case 7: from = { scale: 0.2, opacity: 0 };                       break;
-    case 8: from = { scale: 1.2, opacity: 0 };                       break;
+  if (img) {
+    gsap.killTweensOf(img);
+
+    // Dynamic transition styles per slide index (0 to 4 cycle)
+    const mode = storyIndex % 5;
+    let fromState = { opacity: 0, scale: 1.08, xPercent: 0, yPercent: 0, rotationY: 0 };
+    let ease = 'power2.out';
+
+    switch (mode) {
+      case 0: // Soft Scale Zoom
+        fromState = { opacity: 0, scale: 1.08, xPercent: 0, yPercent: 0, rotationY: 0 };
+        break;
+      case 1: // Dynamic Push Right
+        fromState = { opacity: 0, scale: 1, xPercent: 12, yPercent: 0, rotationY: 0 };
+        break;
+      case 2: // Smooth Pop Zoom
+        fromState = { opacity: 0, scale: 0.90, xPercent: 0, yPercent: 0, rotationY: 0 };
+        ease = 'back.out(1.4)';
+        break;
+      case 3: // Dynamic Push Up
+        fromState = { opacity: 0, scale: 1, xPercent: 0, yPercent: 8, rotationY: 0 };
+        break;
+      case 4: // Elegant 3D Tilt
+        fromState = { opacity: 0, scale: 0.96, xPercent: 0, yPercent: 0, rotationY: 22 };
+        break;
+    }
+
+    img.src = imgSrc;
+    if (blurBg) blurBg.style.backgroundImage = `url('${imgSrc}')`;
+
+    gsap.fromTo(img, fromState, {
+      opacity: 1,
+      scale: 1,
+      xPercent: 0,
+      yPercent: 0,
+      rotationY: 0,
+      duration: 0.65,
+      ease: ease,
+      clearProps: 'transform'
+    });
   }
 
-  // Execute transition
-  const ease = mod === 7 ? 'back.out(1.6)' : 'power2.out';
-  gsap.fromTo(img, from, {
-    xPercent: 0, yPercent: 0, scale: 1, rotationY: 0, rotate: 0,
-    filter: 'blur(0px)', opacity: 1,
-    duration: 0.75,
-    ease: ease,
-    clearProps: 'all'
-  });
-
-  // Play touch tone
-  playTone(520 + (storyIndex * 30), 0.04, 'sine');
-
-  // Trigger next story slide on timeout
   storyTimer = setTimeout(() => {
     showStorySlide(storyIndex + 1);
   }, STORY_DURATION);
@@ -1027,20 +1033,19 @@ function spawnFloatingWord() {
   const container = document.getElementById('iloveyou-container');
   if (!container) return;
 
-  const words = ['I Love You 💕', 'Love You ✨', 'Always 💖', 'Forever 💕', 'My Love 💕', 'Sweetheart 🌸', 'My dear Love 💞'];
+  const words = ['I Love You 💕', 'Love You ✨', 'Always 💖', 'Forever 💕', 'My Love 💕', 'Sweetheart 🌸', 'Ammuu 💞'];
   const el = document.createElement('div');
   el.className = 'iloveyou-float';
   el.textContent = words[Math.floor(Math.random() * words.length)];
 
-  // Random size, sway, delay and duration
-  const x = Math.random() * 80 + 10; // 10% - 90%
-  const size = Math.random() * 0.9 + 1.1; // 1.1rem - 2.0rem
-  const duration = Math.random() * 2.5 + 2.5; // 2.5s - 5.0s
+  // Keep horizontal bounds within 15% to 85% of screen width with centered transform
+  const x = Math.random() * 70 + 15;
+  const size = Math.random() * 0.5 + 1.25;
+  const duration = Math.random() * 2.0 + 3.0;
 
   el.style.left = x + '%';
   el.style.fontSize = size + 'rem';
   el.style.animationDuration = duration + 's';
-  el.style.bottom = '0%';
 
   container.appendChild(el);
 
@@ -1152,11 +1157,18 @@ function initSakuraOverlay() {
 }
 
 
-// ════════════════════════════════════════════════════════════
-// BOOTSTRAP
-// ════════════════════════════════════════════════════════════
+function preloadAllImages() {
+  try {
+    STORIES.forEach(s => { const img = new Image(); img.src = s.img; });
+    FINAL_PHOTOS.forEach(src => { const img = new Image(); img.src = src; });
+    ['gift1.png', 'gift2.png', 'gift3.jpeg', 'passwordpic.png'].forEach(src => { const img = new Image(); img.src = src; });
+  } catch (_) {}
+}
 
 window.addEventListener('load', () => {
+  // Preload all project images into memory for instant transitions
+  preloadAllImages();
+
   // Start global sakura falling animation immediately
   initSakuraOverlay();
 
