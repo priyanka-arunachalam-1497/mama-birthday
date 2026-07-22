@@ -173,30 +173,43 @@ function initFlowers() {
     }
   }
 
-  // 1. GSAP 3D Bouquet Entrance (centered at top: 48%, left: 50%)
-  const bWrap = document.getElementById('bouquet-3d-wrap');
-  if (bWrap) {
-    gsap.fromTo(bWrap,
-      { scale: 0, xPercent: -50, yPercent: -50, rotateY: -60, opacity: 0 },
-      { scale: 1, xPercent: -50, yPercent: -50, rotateY: 0, opacity: 1, duration: 1.6, ease: 'back.out(1.4)' }
-    );
+  // Reset surprise text
+  const surprise = document.getElementById('bloom-surprise');
+  if (surprise) {
+    gsap.set(surprise, { opacity: 0, scale: 0.85, willChange: 'transform, opacity' });
   }
 
-  // 2. Italic Surprise Text Entrance (centered at top: 10%, left: 50%)
+  // 1. "A small gift for my love" — appears after flowers fully bloom (~4.5s)
   gsap.fromTo('#bloom-surprise',
-    { opacity: 0, xPercent: -50, y: 25 },
-    { opacity: 1, xPercent: -50, y: 0, duration: 1.2, delay: 0.8, ease: 'power2.out' }
+    { opacity: 0, scale: 0.85 },
+    {
+      opacity: 1, scale: 1,
+      duration: 1.2,
+      delay: 4.5,
+      ease: 'back.out(1.6)',
+      onStart: () => {
+        if (surprise) surprise.style.willChange = 'transform, opacity';
+      },
+      onComplete: () => {
+        if (surprise) surprise.style.willChange = 'auto';
+      }
+    }
   );
 
-  // 3. Continue button entrance (centered at bottom: 35px, left: 50%)
+  // 2. Continue button entrance (after surprise text settles)
   const nextBtn = document.getElementById('btn-flowers-next');
   if (nextBtn) {
-    gsap.fromTo(nextBtn,
-      { opacity: 0, xPercent: -50, y: 20 },
-      { opacity: 1, xPercent: -50, y: 0, duration: 0.8, delay: 1.6, ease: 'power2.out',
-        onComplete: () => { nextBtn.style.pointerEvents = 'all'; }
+    gsap.set(nextBtn, { willChange: 'transform, opacity' });
+    gsap.to(nextBtn, {
+      opacity: 1, y: 0,
+      duration: 0.75,
+      delay: 5.8,
+      ease: 'power2.out',
+      onComplete: () => {
+        nextBtn.style.pointerEvents = 'all';
+        nextBtn.style.willChange = 'auto';
       }
-    );
+    });
   }
 
   // Start canvas petal shower (keeps falling gently)
@@ -308,15 +321,19 @@ document.getElementById('btn-flowers-next').addEventListener('click', () => {
 // ════════════════════════════════════════════════════════════
 
 const STORIES = [
-  { img: 'https://picsum.photos/seed/pri1/800/1000', label: 'Pure Joy ✨' },
-  { img: 'https://picsum.photos/seed/pri2/800/1000', label: 'Together 💕' },
-  { img: 'https://picsum.photos/seed/pri3/800/1000', label: 'Smiles 😊' },
-  { img: 'https://picsum.photos/seed/pri4/800/1000', label: 'Laughter 😂' },
-  { img: 'https://picsum.photos/seed/pri5/800/1000', label: 'Adventures 🌟' },
-  { img: 'https://picsum.photos/seed/pri6/800/1000', label: 'Moments 💫' },
-  { img: 'https://picsum.photos/seed/pri7/800/1000', label: 'Dreams 🌙' },
-  { img: 'https://picsum.photos/seed/pri8/800/1000', label: 'Cherished 💖' },
-  { img: 'https://picsum.photos/seed/pri9/800/1000', label: 'Forever 🕊️' }
+  { img: 'image1.png'   },
+  { img: 'image2.jpeg'  },
+  { img: 'image3.jpeg'  },
+  { img: 'image4.jpeg'  },
+  { img: 'image5.jpeg'  },
+  { img: 'image6.jpeg'  },
+  { img: 'image7.jpeg'  },
+  { img: 'image8.jpeg'  },
+  { img: 'image9.jpeg'  },
+  { img: 'image10.jpeg' },
+  { img: 'image11.jpeg' },
+  { img: 'image12.jpeg' },
+  { img: 'image13.jpeg' },
 ];
 
 let storyIndex = 0;
@@ -356,23 +373,17 @@ function showStorySlide(idx) {
 
   storyIndex = idx;
 
-  // Update counter
-  const counter = document.getElementById('story-counter');
-  if (counter) counter.textContent = `${storyIndex + 1} / ${STORIES.length}`;
-
-  // Update label
-  const label = document.getElementById('story-label');
-  if (label) label.textContent = STORIES[storyIndex].label;
-
   // Setup photo transition
-  const frame = document.getElementById('story-frame');
   const img = document.getElementById('story-img');
+  const blurBg = document.getElementById('story-blur-bg');
 
   // Cancel existing animation/timer
   clearTimeout(storyTimer);
 
-  // Set image source
-  img.src = STORIES[storyIndex].img;
+  // Set image source and blur background simultaneously
+  const imgSrc = STORIES[storyIndex].img;
+  img.src = imgSrc;
+  if (blurBg) blurBg.style.backgroundImage = `url('${imgSrc}')`;
 
   // Set story fill percentages for progress bar
   for (let i = 0; i < STORIES.length; i++) {
@@ -396,43 +407,27 @@ function showStorySlide(idx) {
 
   // Choose dynamic transitions depending on index
   let from = {};
-  switch (storyIndex) {
-    case 0: // Fade In
-      from = { opacity: 0, scale: 1 };
-      break;
-    case 1: // Slide from right
-      from = { x: '100%', opacity: 1, scale: 1 };
-      break;
-    case 2: // Zoom In
-      from = { scale: 0, opacity: 0 };
-      break;
-    case 3: // Flip Y
-      from = { rotationY: 90, opacity: 0, scale: 0.9 };
-      break;
-    case 4: // Blur to sharp
-      from = { filter: 'blur(25px)', opacity: 0.5 };
-      break;
-    case 5: // Slide from bottom
-      from = { y: '100%', opacity: 1 };
-      break;
-    case 6: // Rotate & scale
-      from = { rotate: 90, scale: 0.3, opacity: 0 };
-      break;
-    case 7: // Bounce in
-      from = { scale: 0.1, opacity: 0 };
-      break;
-    case 8: // Soft fade with scale
-      from = { scale: 1.15, opacity: 0 };
-      break;
+  const mod = storyIndex % 9;
+  switch (mod) {
+    case 0: from = { opacity: 0, scale: 1.05 };                      break;
+    case 1: from = { xPercent: 100, opacity: 0.8, scale: 1 };        break;
+    case 2: from = { scale: 0.3, opacity: 0 };                       break;
+    case 3: from = { rotationY: 90, opacity: 0, scale: 0.9 };        break;
+    case 4: from = { filter: 'blur(22px)', opacity: 0.4, scale: 1 }; break;
+    case 5: from = { yPercent: 60, opacity: 0, scale: 1 };           break;
+    case 6: from = { rotate: 15, scale: 0.5, opacity: 0 };           break;
+    case 7: from = { scale: 0.2, opacity: 0 };                       break;
+    case 8: from = { scale: 1.2, opacity: 0 };                       break;
   }
 
   // Execute transition
-  const ease = storyIndex === 7 ? 'back.out(1.6)' : 'power2.out';
+  const ease = mod === 7 ? 'back.out(1.6)' : 'power2.out';
   gsap.fromTo(img, from, {
-    x: 0, y: 0, scale: 1, rotationY: 0, rotate: 0, filter: 'blur(0px)', opacity: 1,
-    duration: 0.8,
+    xPercent: 0, yPercent: 0, scale: 1, rotationY: 0, rotate: 0,
+    filter: 'blur(0px)', opacity: 1,
+    duration: 0.75,
     ease: ease,
-    clearProps: 'transform'
+    clearProps: 'all'
   });
 
   // Play touch tone
@@ -462,7 +457,7 @@ document.getElementById('story-tap-right')?.addEventListener('click', () => {
 // ════════════════════════════════════════════════════════════
 
 // ⭐ CHANGE THIS to the actual 8-digit birthday code
-const CORRECT_CODE = '19042001';
+const CORRECT_CODE = '23071995';
 
 let codeBuffer = '';
 
@@ -637,12 +632,15 @@ function initGifts() {
   });
 }
 
+// Map of gift number → fullscreen photo src (empty = no fullscreen)
+const GIFT_PHOTOS = { 2: 'gift2.png' };
+
 function openGift(n) {
   if (openedGifts.has(n)) return;
   openedGifts.add(n);
 
-  const lid    = document.getElementById(`gift-lid-${n}`);
-  const reveal = document.getElementById(`gift-reveal-${n}`);
+  const lid     = document.getElementById(`gift-lid-${n}`);
+  const reveal  = document.getElementById(`gift-reveal-${n}`);
   const openBtn = document.getElementById(`gift-open-${n}`);
 
   lid.classList.add('lid-open');
@@ -651,7 +649,6 @@ function openGift(n) {
   gsap.to(`#gift-${n}`, {
     y: -16, duration: 0.3, yoyo: true, repeat: 1, ease: 'power2.inOut',
     onComplete: () => {
-      reveal.classList.add('revealed');
       openBtn.classList.add('hidden');
 
       // Spawn confetti burst from this gift
@@ -662,6 +659,13 @@ function openGift(n) {
         colors: ['#FFDAB9','#FFB347','#FF8C69','#FFD700','#FF69B4']
       });
 
+      // Show fullscreen photo if this gift has one, otherwise show in-box reveal
+      if (GIFT_PHOTOS[n]) {
+        setTimeout(() => showGiftPhoto(GIFT_PHOTOS[n]), 300);
+      } else {
+        reveal.classList.add('revealed');
+      }
+
       // Check if all opened
       if (openedGifts.size === 3) {
         const nextBtn = document.getElementById('btn-gifts-next');
@@ -671,6 +675,35 @@ function openGift(n) {
     }
   });
 }
+
+function showGiftPhoto(src) {
+  const overlay = document.getElementById('gift-photo-overlay');
+  const img     = document.getElementById('gift-photo-img');
+  const blurBg  = document.getElementById('gift-photo-blur-bg');
+
+  img.src = src;
+  blurBg.style.backgroundImage = `url('${src}')`;
+  overlay.classList.add('active');
+}
+
+function closeGiftPhoto() {
+  const overlay = document.getElementById('gift-photo-overlay');
+  overlay.classList.remove('active');
+  // Clear src after fade out
+  setTimeout(() => {
+    document.getElementById('gift-photo-img').src = '';
+    document.getElementById('gift-photo-blur-bg').style.backgroundImage = '';
+  }, 450);
+}
+
+// Close overlay on backdrop click or close button
+document.getElementById('gift-photo-overlay').addEventListener('click', e => {
+  if (e.target !== document.getElementById('gift-photo-close') &&
+      e.target !== document.getElementById('gift-photo-img')) {
+    closeGiftPhoto();
+  }
+});
+document.getElementById('gift-photo-close').addEventListener('click', closeGiftPhoto);
 
 function closeGiftAttempt() {
   showAngryCharacter();
@@ -782,10 +815,57 @@ document.getElementById('angry-backdrop').addEventListener('click', e => {
 let voiceInterval = null;
 let floatingWordsInterval = null;
 let voiceInitialised = false;
+let finalSlideInterval = null;
+
+// Photos for the polaroid slideshow on the final page
+const FINAL_PHOTOS = [
+  'f1.jpeg','f2.jpeg','f3.jpeg','f4.jpeg','f5.jpeg','f6.jpeg',
+  'f7.jpeg','f8.jpeg','f9.jpeg','f10.jpeg','f11.jpeg'
+];
+
+function startFinalSlideshow() {
+  if (finalSlideInterval) clearInterval(finalSlideInterval);
+
+  const imgA = document.getElementById('final-photo-a');
+  const imgB = document.getElementById('final-photo-b');
+  if (!imgA || !imgB) return;
+
+  let idx = 0;            // currently visible index
+  let useA = true;        // which img is currently "on top"
+
+  // Preload all images silently
+  FINAL_PHOTOS.forEach(src => { const i = new Image(); i.src = src; });
+
+  // Set first photo
+  imgA.src = FINAL_PHOTOS[0];
+  imgA.classList.add('active');
+  imgB.classList.remove('active');
+
+  finalSlideInterval = setInterval(() => {
+    idx = (idx + 1) % FINAL_PHOTOS.length;
+    const nextSrc = FINAL_PHOTOS[idx];
+
+    if (useA) {
+      // B becomes next photo → fade B in, fade A out
+      imgB.src = nextSrc;
+      imgB.classList.add('active');
+      imgA.classList.remove('active');
+    } else {
+      // A becomes next photo → fade A in, fade B out
+      imgA.src = nextSrc;
+      imgA.classList.add('active');
+      imgB.classList.remove('active');
+    }
+    useA = !useA;
+  }, 2500); // change every 2.5 seconds
+}
 
 function initSlideshow() {
   if (voiceInitialised) return;
   voiceInitialised = true;
+
+  // Start polaroid photo cycling immediately
+  startFinalSlideshow();
 
   const audio = document.getElementById('voice-audio');
   const heartBtn = document.getElementById('heart-btn');
@@ -893,7 +973,7 @@ function spawnFloatingWord() {
   const container = document.getElementById('iloveyou-container');
   if (!container) return;
 
-  const words = ['I Love You 💕', 'Love You ✨', 'Always 💖', 'Forever 💕', 'My Princess 👑', 'Sweetheart 🌸', 'Priyanka 💞'];
+  const words = ['I Love You 💕', 'Love You ✨', 'Always 💖', 'Forever 💕', 'My Love 💕', 'Sweetheart 🌸', 'My dear Love 💞'];
   const el = document.createElement('div');
   el.className = 'iloveyou-float';
   el.textContent = words[Math.floor(Math.random() * words.length)];

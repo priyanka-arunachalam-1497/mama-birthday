@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday Priyanka! 🎂💕</title>
-  <meta name="description" content="A special interactive birthday experience made with love for Priyanka.">
+  <title>Happy Birthday My dear Love! 🎂💕</title>
+  <meta name="description" content="A special interactive birthday experience made with love.">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -354,71 +354,9 @@
       </div>
     </div>
 
-    <!-- 3D Animated Bouquet -->
-    <div class="bouquet-3d-wrap" id="bouquet-3d-wrap">
-      <div class="bouquet-3d-inner">
-        <!-- Silk Wrapping Paper & Ribbon -->
-        <div class="bouquet-wrapper-paper"></div>
-        <div class="bouquet-ribbon">
-          <div class="ribbon-bow"></div>
-          <div class="ribbon-tail ribbon-tail-l"></div>
-          <div class="ribbon-tail ribbon-tail-r"></div>
-        </div>
-
-        <!-- Stems & Leaves -->
-        <div class="bouquet-stems">
-          <div class="b-stem b-stem-1"></div>
-          <div class="b-stem b-stem-2"></div>
-          <div class="b-stem b-stem-3"></div>
-          <div class="b-stem b-stem-4"></div>
-          <div class="b-stem b-stem-5"></div>
-        </div>
-
-        <!-- 3D Rose Blooms -->
-        <div class="bouquet-blooms">
-          <!-- Main Center Peach Rose -->
-          <div class="b-rose b-rose-center">
-            <div class="b-petal b-petal-1"></div>
-            <div class="b-petal b-petal-2"></div>
-            <div class="b-petal b-petal-3"></div>
-            <div class="b-petal b-petal-4"></div>
-            <div class="b-petal b-petal-5"></div>
-            <div class="b-rose-core"></div>
-          </div>
-          <!-- Left Rose -->
-          <div class="b-rose b-rose-left">
-            <div class="b-petal b-petal-1"></div>
-            <div class="b-petal b-petal-2"></div>
-            <div class="b-petal b-petal-3"></div>
-            <div class="b-rose-core"></div>
-          </div>
-          <!-- Right Rose -->
-          <div class="b-rose b-rose-right">
-            <div class="b-petal b-petal-1"></div>
-            <div class="b-petal b-petal-2"></div>
-            <div class="b-petal b-petal-3"></div>
-            <div class="b-rose-core"></div>
-          </div>
-          <!-- Top Rose -->
-          <div class="b-rose b-rose-top">
-            <div class="b-petal b-petal-1"></div>
-            <div class="b-petal b-petal-2"></div>
-            <div class="b-petal b-petal-3"></div>
-            <div class="b-rose-core"></div>
-          </div>
-          <!-- Accent Filler Flowers -->
-          <div class="b-filler b-filler-1">✨</div>
-          <div class="b-filler b-filler-2">🌸</div>
-          <div class="b-filler b-filler-3">✨</div>
-          <div class="b-filler b-filler-4">🌸</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Surprise message (fades in after bloom) -->
+    <!-- Surprise message — appears after flower bloom -->
     <div class="bloom-surprise" id="bloom-surprise">
-      <div class="surprise-icon">💐</div>
-      <h2 class="surprise-title italic-gift-text">a small gift for my love</h2>
+      <h2 class="surprise-title">a small gift for my love</h2>
       <div class="surprise-heart">💕</div>
     </div>
 
@@ -431,27 +369,21 @@
        ═══════════════════════════════════════════════════ -->
   <section id="page-gallery" class="page story-page">
 
-    <!-- Top: Story progress segments -->
+    <!-- Progress bar only — no title/counter -->
     <div class="story-progress" id="story-progress"></div>
 
-    <!-- Full-screen photo -->
+    <!-- Blurred background layer (same image, cover + blur) -->
+    <div class="story-blur-bg" id="story-blur-bg"></div>
+
+    <!-- Full-screen photo (contain so nothing is cropped) -->
     <div class="story-frame" id="story-frame">
       <img class="story-img" id="story-img"
-           src="https://picsum.photos/seed/pri1/800/1000" alt="Memory">
-      <div class="story-caption-bar">
-        <span class="story-label" id="story-label">Pure Joy ✨</span>
-      </div>
+           src="image1.png" alt="Memory">
     </div>
 
     <!-- Tap zones: left = back, right = next -->
     <div class="story-tap story-tap-left"  id="story-tap-left"></div>
     <div class="story-tap story-tap-right" id="story-tap-right"></div>
-
-    <!-- Header strip -->
-    <div class="story-header">
-      <span class="story-title">Memory Lane 📸</span>
-      <span class="story-counter" id="story-counter">1 / 9</span>
-    </div>
 
   </section>
 
@@ -571,10 +503,8 @@
         </div>
         <div class="gift-reveal" id="gift-reveal-2">
           <button class="gift-close-btn" id="gift-close-2" aria-label="Close gift 2">✕</button>
-          <div class="gift-content">
-            <span class="gift-emoji">🌸</span>
-            <h3>Wish #2</h3>
-            <p>May your day bloom with joy, love,<br>and endless laughter every single day! 🌺</p>
+          <div class="gift-content gift-content--img">
+            <img src="gift2.png" alt="A gift for you 💕" class="gift-reveal-img">
           </div>
         </div>
         <div class="gift-btn-row">
@@ -623,11 +553,13 @@
        ═══════════════════════════════════════════════════ -->
   <section id="page-slideshow" class="page final-page">
 
-    <!-- LEFT: Photo -->
+    <!-- LEFT: Polaroid Slideshow -->
     <div class="final-photo-side">
       <div class="final-photo-frame">
-        <img src="https://picsum.photos/seed/final99/600/800"
-             alt="My Love" id="final-photo">
+        <div class="final-photo-stack">
+          <img src="f1.jpeg" alt="My Love" id="final-photo-a" class="final-slide active">
+          <img src="f2.jpeg" alt="My Love" id="final-photo-b" class="final-slide">
+        </div>
         <div class="final-photo-overlay"></div>
       </div>
     </div>
@@ -642,7 +574,7 @@
       <div class="voice-card glass-card" id="voice-section">
         <div class="voice-icon-anim">🎵</div>
         <h3 class="voice-heading">A voice message for you...</h3>
-        <audio id="voice-audio" src="voice.mp3" preload="metadata"></audio>
+        <audio id="voice-audio" src="Voice message.wav" preload="metadata"></audio>
         <div class="voice-progress-wrap">
           <div class="voice-progress-track">
             <div class="voice-progress-fill" id="voice-progress-fill"></div>
@@ -665,13 +597,24 @@
       <div class="end-inner">
         <div class="end-cake">🎂</div>
         <h1 class="end-h1">Happy Birthday</h1>
-        <h2 class="end-h2">Priyanka!</h2>
+        <h2 class="end-h2">My dear Love!</h2>
         <p class="end-p">May all your dreams bloom forever 💖</p>
         <div class="end-icons">⭐ ✨ 🌟 ✨ ⭐</div>
       </div>
     </div>
 
   </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       FULLSCREEN GIFT PHOTO OVERLAY
+       ═══════════════════════════════════════════════════ -->
+  <div class="gift-photo-overlay" id="gift-photo-overlay">
+    <div class="gift-photo-blur-bg" id="gift-photo-blur-bg"></div>
+    <div class="gift-photo-frame">
+      <img class="gift-photo-img" id="gift-photo-img" src="" alt="Gift">
+    </div>
+    <button class="gift-photo-close" id="gift-photo-close" aria-label="Close">✕</button>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════
        ANGRY CHARACTER OVERLAY

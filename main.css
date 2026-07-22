@@ -134,6 +134,8 @@ button {
   z-index: 1;
   overflow: hidden;
   background: #FFF5F5;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .page.active {
@@ -427,43 +429,31 @@ button {
   background: #FFF5F5;
 }
 
-/* Instagram Story Memory Lane styling */
+/* ── Story page ─────────────────────────────────────────── */
 .story-page {
   justify-content: flex-start;
-  background: #111 !important; /* cinematic dark background for photo focus */
+  background: #0a0a0a !important;
 }
 
-/* Header */
-.story-header {
+/* Blurred background — same image scaled up + blurred */
+.story-blur-bg {
   position: absolute;
-  top: 24px;
-  left: 20px;
-  right: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 100;
-  color: #fff;
-  font-family: var(--f-head);
-  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-}
-
-.story-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.story-counter {
-  font-size: 0.95rem;
-  opacity: 0.85;
+  inset: -30px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(28px) brightness(0.55) saturate(1.3);
+  transform: scale(1.08);
+  z-index: 0;
+  transition: background-image 0.5s ease;
 }
 
 /* Progress bar at top */
 .story-progress {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
+  top: 14px;
+  left: 14px;
+  right: 14px;
   display: flex;
   gap: 5px;
   z-index: 100;
@@ -472,7 +462,7 @@ button {
 .story-progress-bar {
   flex: 1;
   height: 3px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 2px;
   overflow: hidden;
   position: relative;
@@ -484,49 +474,32 @@ button {
   top: 0;
   bottom: 0;
   width: 0%;
-  background: #FFF5F5;
-  box-shadow: 0 0 8px rgba(255,183,197,0.8);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 6px rgba(255, 183, 197, 0.8);
 }
 
-/* Frame container */
+/* Frame — transparent so blur bg shows */
 .story-frame {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  z-index: 2;
+  padding: 30px 16px 16px;
 }
 
+/* Image — contain so full photo always visible */
 .story-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 8px 50px rgba(0,0,0,0.6);
   transform-origin: center center;
-}
-
-/* Caption bar at bottom */
-.story-caption-bar {
-  position: absolute;
-  bottom: 60px;
-  left: 20px;
-  right: 20px;
-  padding: 18px 24px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px) saturate(120%);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 18px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  z-index: 90;
-  transform: translateY(0);
-}
-
-.story-label {
-  font-family: var(--f-script);
-  font-size: 1.8rem;
-  color: #FFF5F5;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  display: block;
 }
 
 /* Tap targets */
@@ -540,14 +513,8 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-.story-tap-left {
-  left: 0;
-}
-
-.story-tap-right {
-  right: 0;
-  width: 70%; /* Favor tap right to go forward */
-}
+.story-tap-left  { left: 0; }
+.story-tap-right { right: 0; width: 70%; }
 
 
 /* ════════════════════════════════════════════════════════════
@@ -1013,10 +980,115 @@ button {
   padding: 28px 20px;
 }
 
+/* Image-only variant — no padding, image fills the panel */
+.gift-content--img {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.gift-reveal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
 .gift-emoji {
   font-size: 2.8rem;
   display: block;
   margin-bottom: 10px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FULLSCREEN GIFT PHOTO OVERLAY
+   ════════════════════════════════════════════════════════════ */
+
+.gift-photo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+  cursor: pointer;
+}
+
+.gift-photo-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Blurred background — same as memory lane */
+.gift-photo-blur-bg {
+  position: absolute;
+  inset: -30px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(28px) brightness(0.5) saturate(1.3);
+  transform: scale(1.08);
+  z-index: 0;
+}
+
+/* Image frame — contain so full image visible */
+.gift-photo-frame {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  padding: 20px;
+}
+
+.gift-photo-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 12px 60px rgba(0,0,0,0.7);
+  display: block;
+  transform: scale(0.85);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gift-photo-overlay.active .gift-photo-img {
+  transform: scale(1);
+}
+
+/* Close button */
+.gift-photo-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.gift-photo-close:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: scale(1.12);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -1037,6 +1109,8 @@ button {
   inset: 0;
   pointer-events: none;
   z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .night-glow {
@@ -1644,31 +1718,37 @@ button {
 /* Blooming Surprise text overlay */
 .bloom-surprise {
   position: absolute;
-  top: 60px;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(0);
   z-index: 100;
   text-align: center;
   opacity: 0;
-  transform: translateY(20px);
   pointer-events: none;
-}
-
-.surprise-icon {
-  font-size: 2.2rem;
-  margin-bottom: 5px;
-  animation: cakeFloat 1.8s ease-in-out infinite alternate;
+  will-change: transform, opacity;
 }
 
 .surprise-title {
   font-family: var(--f-script);
-  font-size: 2.5rem;
-  line-height: 1.25;
+  font-size: 2.6rem;
+  line-height: 1.3;
   color: #A02050;
-  text-shadow: 0 4px 15px rgba(255, 180, 200, 0.8), 0 0 20px rgba(255,255,255,0.9);
-  margin-bottom: 8px;
+  text-shadow:
+    0 0 30px rgba(255, 200, 220, 0.95),
+    0 2px 10px rgba(180, 40, 80, 0.4);
+  animation: surpriseFloat 3s ease-in-out infinite alternate;
+}
+
+@keyframes surpriseFloat {
+  0%   { transform: translateY(0px); }
+  100% { transform: translateY(-8px); }
 }
 
 .surprise-heart {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  display: block;
+  margin-top: 4px;
+  animation: surpriseFloat 2.6s 0.3s ease-in-out infinite alternate;
 }
 
 /* Hearts floating layer */
@@ -1811,21 +1891,40 @@ button {
   background: #fff;
   padding: 18px 18px 70px;
   border-radius: 4px;
-  box-shadow: 0 25px 65px rgba(220,100,130,0.22);
+  box-shadow: 0 25px 65px rgba(220,100,130,0.22), 0 8px 30px rgba(0,0,0,0.18);
   transform: rotate(-2deg);
   transition: transform 0.4s ease;
   width: 100%;
+  overflow: hidden;
 }
 
 .final-photo-frame:hover {
   transform: rotate(0deg) scale(1.03);
 }
 
-.final-photo-frame img {
+/* Stack container — both images sit on top of each other */
+.final-photo-stack {
+  position: relative;
   width: 100%;
   height: 440px;
-  object-fit: cover;
+  overflow: hidden;
   border-radius: 2px;
+  background: #121212;
+}
+
+.final-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.final-slide.active {
+  opacity: 1;
 }
 
 .final-photo-overlay {
@@ -1840,10 +1939,9 @@ button {
   font-family: var(--f-script);
   font-size: 1.6rem;
   color: #A02050;
-  content: 'My Princess 👑';
 }
 .final-photo-frame::after {
-  content: 'My Princess 👑';
+  content: 'My Love 💕';
   position: absolute;
   bottom: 22px;
   left: 0; right: 0;
@@ -2053,20 +2151,95 @@ button {
   }
 }
 
-/* Final birthday wish popup overlay */
+/* Final birthday wish popup overlay — Full screen cover */
 .final-wish {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 200;
-  background: radial-gradient(ellipse at center, #FFF8F8 0%, #FFE4EE 45%, #FFD0E4 80%, #FFC0D6 100%);
+  z-index: 999;
+  background: radial-gradient(ellipse at center, #FFF8F8 0%, #FFE4EE 40%, #FFD0E4 75%, #FFB7C5 100%);
   display: none;
   align-items: center;
   justify-content: center;
   opacity: 0;
+  backdrop-filter: blur(15px);
 }
 
 .final-wish.show {
   display: flex;
+}
+
+.end-inner {
+  text-align: center;
+  padding: 45px 35px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  border: 2.5px solid rgba(220, 100, 140, 0.35);
+  border-radius: 32px;
+  box-shadow: 0 25px 90px rgba(220, 90, 130, 0.35), inset 0 0 30px rgba(255, 255, 255, 0.9);
+  max-width: 520px;
+  width: 90%;
+  position: relative;
+}
+
+.end-cake {
+  font-size: 5.8rem;
+  line-height: 1;
+  margin-bottom: 18px;
+  display: inline-block;
+  animation: floatCake 2.2s ease-in-out infinite alternate, glowCake 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes floatCake {
+  0% {
+    transform: translateY(0) scale(1) rotate(-4deg);
+  }
+  100% {
+    transform: translateY(-16px) scale(1.12) rotate(4deg);
+  }
+}
+
+@keyframes glowCake {
+  0% {
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.6));
+  }
+  100% {
+    filter: drop-shadow(0 0 35px rgba(255, 105, 180, 0.95));
+  }
+}
+
+.end-h1 {
+  font-family: var(--f-head);
+  font-size: 2.8rem;
+  background: linear-gradient(135deg, #C04070 0%, #7A1840 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+
+.end-h2 {
+  font-family: var(--f-script);
+  font-size: 3.4rem;
+  color: #A02050;
+  text-shadow: 0 4px 18px rgba(255, 180, 200, 0.85);
+  margin-bottom: 16px;
+}
+
+.end-p {
+  font-family: var(--f-body);
+  font-size: 1.35rem;
+  color: rgba(120, 40, 70, 0.88);
+  margin-bottom: 22px;
+}
+
+.end-icons {
+  font-size: 1.6rem;
+  letter-spacing: 10px;
+  animation: sparkleTwinkle 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes sparkleTwinkle {
+  0% { opacity: 0.5; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1.1); }
 }
 
 
